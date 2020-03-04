@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config>
+        <device id="pixel_3" />
+      </config>
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="98c3575a-b2ce-472a-b43b-da39505c2ad2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/badi/BadyMainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/badi/BadyMainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/kobeie/KobeieMainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/kobeie/KobeieMainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/main/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/main/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/radifi/RadifiMainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/radifi/RadifiMainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/zehi_kamani/ZehiKamaniMainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/zehi_kamani/ZehiKamaniMainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/zehi_zakhmeie/ZehiZakhmeieMainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/zehi_zakhmeie/ZehiZakhmeieMainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/your_work.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout-normal/activity_kobeie_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout-normal/activity_kobeie_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/build/classes/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="8_Foldable_API_29_xlarge" />
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ChildrenMusic" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ChildrenMusic" type="f1a62948:ProjectNode" />
+                <item name="ChildrenMusic" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ChildrenMusic" type="f1a62948:ProjectNode" />
+                <item name="ChildrenMusic" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ChildrenMusic" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ChildrenMusic" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ChildrenMusic" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="android" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ChildrenMusic" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/badi/BadyMainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="427">
+              <caret line="159" column="43" lean-forward="true" selection-start-line="159" selection-start-column="43" selection-end-line="159" selection-end-column="43" />
+              <folding>
+                <element signature="method#onClick#0;class#BadyMainActivity#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>small</find>
+    </findStrings>
+    <dirStrings>
+      <dir>C:\Users\MAJID-PC\AndroidStudioProjects\ChildrenMusic\app\src\main\java\com\example</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-xlarge/activity_surna.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-large/activity_surna.xml" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-normal/activity_surna.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/badi/player/SurnaActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/main/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-normal/exo_controller.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-xlarge/exo_controller.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-large/exo_controller.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/Splash.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_home2.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-normal/activity_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-small/activity_kobeie_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-small/activity_banjo.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-small/exo_controller.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-small/activity_dohol.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-small/activity_qanon.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-small/activity_qeychak.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-small/activity_inner_rv_item.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-small/activity_surna.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-large/activity_bady_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-normal/activity_bady_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-small/activity_bady_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-normal/activity_kobeie_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/kobeie/KobeieMainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/zehi_zakhmeie/ZehiZakhmeieMainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/badi/BadyMainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/zehi_kamani/ZehiKamaniMainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/childrenmusic/radifi/RadifiMainActivity.java" />
+      </list>
+    </option>
+  </component>
+  <component name="Pro

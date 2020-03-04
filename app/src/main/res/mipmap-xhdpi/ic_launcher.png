@@ -1,0 +1,96 @@
+package com.example.childrenmusic.zehi_zakhmeie;
+
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.WindowManager;
+
+import com.example.childrenmusic.R;
+import com.example.childrenmusic.zehi_kamani.adapter.ZehiKamaniAdapter;
+import com.example.childrenmusic.zehi_zakhmeie.adapter.ZehiZakhmeieAdapter;
+import com.example.childrenmusic.zehi_zakhmeie.datamodel.ZehiZakhmeieDataModel;
+import com.example.childrenmusic.zehi_zakhmeie.generator.ZehiZakhmeieDataGenerator;
+import com.example.childrenmusic.zehi_zakhmeie.player.BanjoActivity;
+
+public class ZehiZakhmeieMainActivity extends AppCompatActivity implements ZehiZakhmeieAdapter.ZehiZakhmeieOnclick{
+
+    RecyclerView zehi_zakhme_recycler;
+    Toolbar toolbar_z;
+    MediaPlayer mp;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_zehi_zakhmeie_main);
+
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+        zehi_zakhme_recycler=findViewById(R.id.zehi_zakhme_recycler);
+        toolbar_z=findViewById(R.id.toolbar_z);
+
+        mp=MediaPlayer.create(this,R.raw.click);
+        mp.setLooping(false);
+
+        ViewCompat.setNestedScrollingEnabled(zehi_zakhme_recycler, false);
+        zehi_zakhme_recycler.setHasFixedSize(true);
+
+        ZehiZakhmeieAdapter adapter=new ZehiZakhmeieAdapter(this, ZehiZakhmeieDataGenerator.getZehiZakhmeieDataModel(this),this);
+        adapter.notifyDataSetChanged();
+
+        zehi_zakhme_recycler.setLayoutManager(new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL,false));
+        zehi_zakhme_recycler.setAdapter(adapter);
+
+        if ((getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) ==
+                Configuration.SCREENLAYOUT_SIZE_XLARGE)
+        {
+            BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(R.drawable.qavaal);
+            int imageHeight = bd.getBitmap().getHeight();
+            int finalImageHeghit=imageHeight;
+            int imageWidth = bd.getBitmap().getWidth();
+
+
+            BitmapDrawable bd1 = (BitmapDrawable) this.getResources().getDrawable(R.drawable.koobei_inter_menu);
+            int imageHeight1 = bd1.getBitmap().getHeight();
+            int imageWidth1 = bd1.getBitmap().getWidth();
+
+            CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) toolbar_z.getLayoutParams();
+            int a=imageHeight-layoutParams.MATCH_PARENT;
+            layoutParams.height =imageHeight1-finalImageHeghit;
+            //layoutParams.height =imageHeight1;
+            toolbar_z.setLayoutParams(layoutParams);
+        }
+        if ((getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) ==
+                Configuration.SCREENLAYOUT_SIZE_LARGE)
+        {
+            BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(R.drawable.qavaal);
+            int imageHeight = bd.getBitmap().getHeight();
+            int finalImageHeghit=imageHeight+imageHeight+imageHeight;
+            int imageWidth = bd.getBitmap().getWidth();
+
+
+            BitmapDrawable bd1 = (BitmapDrawable) this.getResources().getDrawable(R.drawable.koobei_inter_menu);
+            int imageHeight1 = bd1.getBitmap().getHeight();
+            int imageWidth1 = bd1.getBitmap().getWidth();
+
+            CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) toolbar_z.getLayoutParams();
+            int a=imageHeight-layoutParams.MATCH_PARENT;
+            layoutParams.height =imageHeight1-finalImageHeghit;
+            //layoutParams.height =imageHeight1;
+            toolbar_z.setLayoutParams(layoutParams);
+        }
+        if ((getResources().getConfiguration().screenLayout &
+      
