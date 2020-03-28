@@ -6,11 +6,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.mystreamer.adapter.PlayerAdapter;
+import com.example.mystreamer.dagger.app.App;
 import com.example.mystreamer.xml.Xml;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -30,6 +33,8 @@ import com.google.android.exoplayer2.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,22 +44,33 @@ import io.reactivex.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity implements Observer<List<ArrayList<String>>> {
 
     PlayerView pw;
-    SimpleExoPlayer simpleExoPlayer;
-    DefaultTrackSelector trackSelector;
     ArrayList<String> urls;
+    ArrayList<String> chName;
     RecyclerView rv;
     RelativeLayout layout;
+    ProgressBar prg_bar;
     int pos=0;
     Xml xml=new Xml();
+
+    SimpleExoPlayer simpleExoPlayer;
+    @Inject
+    DefaultTrackSelector trackSelector;
+    @Inject
+    DataSource.Factory daFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        App.getApp().getPlayerComponent(this).getPlayer(this);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         layout=findViewById(R.id.layout);
         pw=findViewById(R.id.pW);
+        prg_bar=findViewById(R.id.prg_bar);
+        prg_bar.setVisibility(View.VISIBLE);
 
         Observable<List<ArrayList<String>>> observable=xml.getObservableXml("5.160.10.54:8090");
         observable.subscribeOn(Schedulers.io())
@@ -94,13 +110,19 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
     public void setUpView(int pos)
     {
+        prg_bar.setVisibility(View.VISIBLE);
        if (pos<urls.size())
        {
-           trackSelector=new DefaultTrackSelector();
+           if (simpleExoPlayer!=null)
+           {
+                   simpleExoPlayer.release();
+                   simpleExoPlayer=null;
+           }
+          // trackSelector=new DefaultTrackSelector();
+           Toast.makeText(this, chName.get(pos).toString() , Toast.LENGTH_SHORT).show();
            simpleExoPlayer= ExoPlayerFactory.newSimpleInstance(this,trackSelector);
            pw.setPlayer(simpleExoPlayer);
-           DataSource.Factory daFactory=new DefaultDataSourceFactory(this, Util.getUserAgent(this,"EXOPlayer"));
-
+          // DataSource.Factory daFactory=new DefaultDataSourceFactory(this, Util.getUserAgent(this,"EXOPlayer"));
 
            Uri audioUri=Uri.parse(urls.get(pos));
 
@@ -111,7 +133,14 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
            simpleExoPlayer.addListener(new Player.EventListener() {
                @Override
+               public void onIsPlayingChanged(boolean isPlaying) {
+                   if (isPlaying)
+                       prg_bar.setVisibility(View.INVISIBLE);
+               }
+
+               @Override
                public void onPlayerError(ExoPlaybackException error) {
+                   prg_bar.setVisibility(View.INVISIBLE);
                    Toast.makeText(MainActivity.this, "در پخش مشکلی پیش آمده مجدد تلاش کنید", Toast.LENGTH_LONG).show();
                }
            });
@@ -136,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     @Override
     public void onNext(List<ArrayList<String>> arrayLists) {
         urls=arrayLists.get(0);
+        chName=arrayLists.get(1);
         String str=urls.get(0);
 
         if (str.equals("error"))
@@ -155,5 +185,20 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     @Override
     public void onComplete() {
         setUpView(0);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (simpleExoPlayer != null)
+            simpleExoPlayer.release();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (simpleExoPlayer != null)
+            simpleExoPlayer.release();
     }
 }

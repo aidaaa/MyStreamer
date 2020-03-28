@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name="com.example.mystreamer.dagger.app.App"
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
@@ -24,7 +25,9 @@
         android:testOnly="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true" >
-        <activity android:name="com.example.mystreamer.MainActivity" >
+        <activity
+            android:name="com.example.mystreamer.MainActivity"
+            android:configChanges="orientation|screenSize|layoutDirection" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
