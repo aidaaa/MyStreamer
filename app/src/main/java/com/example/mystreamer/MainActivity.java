@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -51,6 +54,11 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     ProgressBar prg_bar;
     int pos=0;
     Xml xml=new Xml();
+    boolean isStop=false;
+
+    PowerManager.WakeLock wl;
+    PowerManager pm;
+
 
     SimpleExoPlayer simpleExoPlayer;
     @Inject
@@ -62,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+    /*    pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "myWakeName:Tag");
+        wl.acquire();*/
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         App.getApp().getPlayerComponent(this).getPlayer(this);
 
@@ -193,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         super.onDestroy();
         if (simpleExoPlayer != null)
             simpleExoPlayer.release();
+       // wl.release();
     }
 
     @Override
@@ -200,5 +214,15 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         super.onStop();
         if (simpleExoPlayer != null)
             simpleExoPlayer.release();
+        isStop=true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (isStop) {
+            setUpView(pos);
+            isStop=false;
+        }
     }
 }
