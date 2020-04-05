@@ -1,36 +1,29 @@
 package com.example.mystreamer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.mystreamer.adapter.PlayerAdapter;
+import com.example.mystreamer.adapter.ShowChannelAdapter;
 import com.example.mystreamer.dagger.app.App;
 import com.example.mystreamer.xml.Xml;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 
 
 import java.util.ArrayList;
@@ -44,7 +37,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity implements Observer<List<ArrayList<String>>> {
+public class MainActivity extends AppCompatActivity implements Observer<List<ArrayList<String>>>, ShowChannelAdapter.OnItemClickListener {
 
     PlayerView pw;
     ArrayList<String> urls;
@@ -55,10 +48,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     int pos=0;
     Xml xml=new Xml();
     boolean isStop=false;
-
-    PowerManager.WakeLock wl;
-    PowerManager pm;
-
+   RecyclerView recyclerView;
 
     SimpleExoPlayer simpleExoPlayer;
     @Inject
@@ -69,11 +59,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
-    /*    pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "myWakeName:Tag");
-        wl.acquire();*/
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         App.getApp().getPlayerComponent(this).getPlayer(this);
@@ -81,9 +68,14 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         layout=findViewById(R.id.layout);
+
+        recyclerView=findViewById(R.id.recycler);
+
         pw=findViewById(R.id.pW);
         prg_bar=findViewById(R.id.prg_bar);
         prg_bar.setVisibility(View.VISIBLE);
+
+
 
         Observable<List<ArrayList<String>>> observable=xml.getObservableXml("5.160.10.54:8090");
         observable.subscribeOn(Schedulers.io())
@@ -96,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             @Override
             public void onSwipeLeft() {
                 super.onSwipeLeft();
-                if (pos==urls.size())
+                if (pos==urls.size()-1)
                 {}
                 else
                 {
@@ -118,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
                 }
             }
         });
-
     }
 
     public void setUpView(int pos)
@@ -178,15 +169,20 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     @Override
     public void onNext(List<ArrayList<String>> arrayLists) {
         urls=arrayLists.get(0);
-        chName=arrayLists.get(1);
+
         String str=urls.get(0);
 
         if (str.equals("error"))
         {
             Toast.makeText(this, "فایل xml یافت نشد", Toast.LENGTH_SHORT).show();
+            prg_bar.setVisibility(View.INVISIBLE);
         }
         else {
             urls = arrayLists.get(0);
+            chName=arrayLists.get(1);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            ShowChannelAdapter adapter=new ShowChannelAdapter(this,chName);
+            recyclerView.setAdapter(adapter);
         }
     }
 
@@ -197,7 +193,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
     @Override
     public void onComplete() {
-        setUpView(0);
+      if (chName.size()>0)
+          setUpView(0);
     }
 
 
@@ -223,6 +220,25 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         if (isStop) {
             setUpView(pos);
             isStop=false;
+        }
+    }
+
+    @Override
+    public void onClick(String name) {
+        for (int i = 0; i < chName.size(); i++) {
+            String ch=chName.get(i);
+            if (ch.equals(name))
+            {
+                if (pos==i)
+                {
+                    return;
+                }
+                else {
+                    pos = i;
+                    setUpView(pos);
+                    return;
+                }
+            }
         }
     }
 }
