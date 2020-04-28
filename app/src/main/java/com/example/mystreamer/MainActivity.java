@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -45,10 +46,15 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     RecyclerView rv;
     RelativeLayout layout;
     ProgressBar prg_bar;
-    int pos=0;
-    Xml xml=new Xml();
-    boolean isStop=false;
-   RecyclerView recyclerView;
+    int pos = 0;
+    Xml xml = new Xml();
+    boolean isStop = false;
+    RecyclerView recyclerView;
+    boolean chList = false;
+    boolean showRv=false;
+    SharedPreferences.Editor editor ;
+    SharedPreferences prefs;
+
 
     SimpleExoPlayer simpleExoPlayer;
     @Inject
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -67,31 +73,32 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        layout=findViewById(R.id.layout);
+        layout = findViewById(R.id.layout);
 
-        recyclerView=findViewById(R.id.recycler);
+        recyclerView = findViewById(R.id.rv);
 
-        pw=findViewById(R.id.pW);
-        prg_bar=findViewById(R.id.prg_bar);
+        pw = findViewById(R.id.pW1);
+        prg_bar = findViewById(R.id.prg_bar);
         prg_bar.setVisibility(View.VISIBLE);
 
+        editor= getSharedPreferences("lastCh", MODE_PRIVATE).edit();
+        prefs = getSharedPreferences("lastCh", MODE_PRIVATE);
+        pos=prefs.getInt("pos",0);
 
-
-        Observable<List<ArrayList<String>>> observable=xml.getObservableXml("5.160.10.54:8090");
+        Observable<List<ArrayList<String>>> observable = xml.getObservableXml("5.160.10.54:8090");
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this);
 
-        pw.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this)
-        {
+
+        pw.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+
             //up
             @Override
             public void onSwipeLeft() {
                 super.onSwipeLeft();
-                if (pos==urls.size()-1)
-                {}
-                else
-                {
+                if (pos == urls.size() - 1) {
+                } else {
                     pos++;
                     setUpView(pos);
                 }
@@ -101,62 +108,84 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             @Override
             public void onSwipeRight() {
                 super.onSwipeRight();
-                if (pos==0)
-                {}
-                else
-                {
+                if (pos == 0) {
+                } else {
                     pos--;
                     setUpView(pos);
+                }
+            }
+
+            //show channel list
+            @Override
+            public void onClick() {
+                super.onClick();
+                if (chList)
+                {
+                    if (!showRv)
+                    {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        showRv=true;
+                    }
+                }
+            }
+
+            //hide channel list
+            @Override
+            public void onDoubleClick() {
+                super.onDoubleClick();
+                if (chList)
+                {
+                    if (showRv)
+                    {
+                        recyclerView.setVisibility(View.INVISIBLE);
+                        showRv=false;
+                    }
                 }
             }
         });
     }
 
-    public void setUpView(int pos)
-    {
+    public void setUpView(int pos) {
         prg_bar.setVisibility(View.VISIBLE);
-       if (pos<urls.size())
-       {
-           if (simpleExoPlayer!=null)
-           {
-                   simpleExoPlayer.release();
-                   simpleExoPlayer=null;
-           }
-          // trackSelector=new DefaultTrackSelector();
-           Toast.makeText(this, chName.get(pos).toString() , Toast.LENGTH_SHORT).show();
-           simpleExoPlayer= ExoPlayerFactory.newSimpleInstance(this,trackSelector);
-           pw.setPlayer(simpleExoPlayer);
-          // DataSource.Factory daFactory=new DefaultDataSourceFactory(this, Util.getUserAgent(this,"EXOPlayer"));
+        if (pos < urls.size()) {
+            if (simpleExoPlayer != null) {
+                simpleExoPlayer.release();
+                simpleExoPlayer = null;
+            }
+            // trackSelector=new DefaultTrackSelector();
+            Toast.makeText(this, chName.get(pos).toString(), Toast.LENGTH_SHORT).show();
+            simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+            pw.setPlayer(simpleExoPlayer);
+            // DataSource.Factory daFactory=new DefaultDataSourceFactory(this, Util.getUserAgent(this,"EXOPlayer"));
 
-           Uri audioUri=Uri.parse(urls.get(pos));
+            Uri audioUri = Uri.parse(urls.get(pos));
 
-           MediaSource mediaSource=new ProgressiveMediaSource.Factory(daFactory).createMediaSource(audioUri);
+            MediaSource mediaSource = new ProgressiveMediaSource.Factory(daFactory).createMediaSource(audioUri);
 
-           simpleExoPlayer.prepare(mediaSource);
-           simpleExoPlayer.setPlayWhenReady(true);
+            simpleExoPlayer.prepare(mediaSource);
+            simpleExoPlayer.setPlayWhenReady(true);
 
-           simpleExoPlayer.addListener(new Player.EventListener() {
-               @Override
-               public void onIsPlayingChanged(boolean isPlaying) {
-                   if (isPlaying)
-                       prg_bar.setVisibility(View.INVISIBLE);
-               }
+            simpleExoPlayer.addListener(new Player.EventListener() {
+                @Override
+                public void onIsPlayingChanged(boolean isPlaying) {
+                    if (isPlaying)
+                        prg_bar.setVisibility(View.INVISIBLE);
+                }
 
-               @Override
-               public void onPlayerError(ExoPlaybackException error) {
-                   prg_bar.setVisibility(View.INVISIBLE);
-                   Toast.makeText(MainActivity.this, "در پخش مشکلی پیش آمده مجدد تلاش کنید", Toast.LENGTH_LONG).show();
-               }
-           });
-       }
+                @Override
+                public void onPlayerError(ExoPlaybackException error) {
+                    prg_bar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(MainActivity.this, "در پخش مشکلی پیش آمده مجدد تلاش کنید", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
-    public ArrayList<String> getUrl()
-    {
-        ArrayList<String> filePath=new ArrayList<>();
-         filePath.add("http://5.160.10.54:1010");
-                filePath.add("http://5.160.10.54:1011");
-                filePath.add("http://5.160.10.54:1012");
+    public ArrayList<String> getUrl() {
+        ArrayList<String> filePath = new ArrayList<>();
+        filePath.add("http://5.160.10.54:1010");
+        filePath.add("http://5.160.10.54:1011");
+        filePath.add("http://5.160.10.54:1012");
 
         return filePath;
     }
@@ -168,21 +197,20 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
     @Override
     public void onNext(List<ArrayList<String>> arrayLists) {
-        urls=arrayLists.get(0);
+        urls = arrayLists.get(0);
 
-        String str=urls.get(0);
+        String str = urls.get(0);
 
-        if (str.equals("error"))
-        {
+        if (str.equals("error")) {
             Toast.makeText(this, "فایل xml یافت نشد", Toast.LENGTH_SHORT).show();
             prg_bar.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
             urls = arrayLists.get(0);
-            chName=arrayLists.get(1);
+            chName = arrayLists.get(1);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            ShowChannelAdapter adapter=new ShowChannelAdapter(this,chName);
+            ShowChannelAdapter adapter = new ShowChannelAdapter(this, chName);
             recyclerView.setAdapter(adapter);
+            chList = true;
         }
     }
 
@@ -193,8 +221,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
     @Override
     public void onComplete() {
-      if (chName.size()>0)
-          setUpView(0);
+        if (chName.size() > 0)
+            setUpView(pos);
     }
 
 
@@ -203,7 +231,9 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         super.onDestroy();
         if (simpleExoPlayer != null)
             simpleExoPlayer.release();
-       // wl.release();
+        // wl.release();
+        editor.putInt("pos",pos);
+        editor.apply();
     }
 
     @Override
@@ -211,7 +241,10 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         super.onStop();
         if (simpleExoPlayer != null)
             simpleExoPlayer.release();
-        isStop=true;
+        isStop = true;
+
+        editor.putInt("pos",pos);
+        editor.apply();
     }
 
     @Override
@@ -219,21 +252,19 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         super.onStart();
         if (isStop) {
             setUpView(pos);
-            isStop=false;
+            isStop = false;
         }
+        pos=prefs.getInt("pos",0);
     }
 
     @Override
     public void onClick(String name) {
         for (int i = 0; i < chName.size(); i++) {
-            String ch=chName.get(i);
-            if (ch.equals(name))
-            {
-                if (pos==i)
-                {
+            String ch = chName.get(i);
+            if (ch.equals(name)) {
+                if (pos == i) {
                     return;
-                }
-                else {
+                } else {
                     pos = i;
                     setUpView(pos);
                     return;

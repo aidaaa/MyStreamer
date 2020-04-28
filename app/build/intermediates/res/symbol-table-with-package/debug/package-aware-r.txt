@@ -1400,6 +1400,7 @@ id recycler
 id right
 id right_icon
 id right_side
+id rv
 id rv_pw
 id save_image_matrix
 id save_non_transition_alpha
@@ -1548,6 +1549,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_encrypt
 layout activity_main
 layout activity_main2
 layout ch_rv_item
