@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mystreamer.adapter.ShowChannelAdapter;
@@ -40,6 +41,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements Observer<List<ArrayList<String>>>, ShowChannelAdapter.OnItemClickListener {
 
+    TextView txt;
     PlayerView pw;
     ArrayList<String> urls;
     ArrayList<String> chName;
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     boolean showRv=false;
     SharedPreferences.Editor editor ;
     SharedPreferences prefs;
+    int textSize;
+    ArrayList<Integer> textSizeList=new ArrayList<>();
 
 
     SimpleExoPlayer simpleExoPlayer;
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         layout = findViewById(R.id.layout);
 
         recyclerView = findViewById(R.id.rv);
+        txt=findViewById(R.id.txt);
 
         pw = findViewById(R.id.pW1);
         prg_bar = findViewById(R.id.prg_bar);
@@ -126,6 +131,11 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
                         recyclerView.setVisibility(View.VISIBLE);
                         showRv=true;
                     }
+                   else if (showRv)
+                    {
+                        recyclerView.setVisibility(View.INVISIBLE);
+                        showRv=false;
+                    }
                 }
             }
 
@@ -133,14 +143,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             @Override
             public void onDoubleClick() {
                 super.onDoubleClick();
-                if (chList)
-                {
-                    if (showRv)
-                    {
-                        recyclerView.setVisibility(View.INVISIBLE);
-                        showRv=false;
-                    }
-                }
+                //TODO --->for archive
             }
         });
     }
@@ -176,18 +179,10 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
                 public void onPlayerError(ExoPlaybackException error) {
                     prg_bar.setVisibility(View.INVISIBLE);
                     Toast.makeText(MainActivity.this, "در پخش مشکلی پیش آمده مجدد تلاش کنید", Toast.LENGTH_LONG).show();
+                    System.out.println(error.getMessage());
                 }
             });
         }
-    }
-
-    public ArrayList<String> getUrl() {
-        ArrayList<String> filePath = new ArrayList<>();
-        filePath.add("http://5.160.10.54:1010");
-        filePath.add("http://5.160.10.54:1011");
-        filePath.add("http://5.160.10.54:1012");
-
-        return filePath;
     }
 
     @Override
@@ -201,16 +196,38 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
         String str = urls.get(0);
 
-        if (str.equals("error")) {
+        if (str.equals("error"))
+        {
             Toast.makeText(this, "فایل xml یافت نشد", Toast.LENGTH_SHORT).show();
             prg_bar.setVisibility(View.INVISIBLE);
-        } else {
-            urls = arrayLists.get(0);
-            chName = arrayLists.get(1);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            ShowChannelAdapter adapter = new ShowChannelAdapter(this, chName);
-            recyclerView.setAdapter(adapter);
-            chList = true;
+        }
+        else
+            {
+                urls = arrayLists.get(0);
+                chName = arrayLists.get(1);
+
+            for (int i = 0; i < chName.size(); i++) {
+                String name=chName.get(i);
+                textSize=name.length();
+                if (textSize<15)
+                textSizeList.add(textSize);
+            }
+            int maxValue=textSizeList.get(0);
+            int index = 0;
+            for (int j = 0; j < textSizeList.size(); j++) {
+                if(textSizeList.get(j) > maxValue){
+                    maxValue = textSizeList.get(j);
+                    index=j;
+                }
+            }
+            txt.setText(chName.get(index));
+            txt.measure(0, 0);
+            int width=txt.getMeasuredWidth();
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                ShowChannelAdapter adapter = new ShowChannelAdapter(this, chName,width);
+                recyclerView.setAdapter(adapter);
+                chList = true;
         }
     }
 
@@ -221,8 +238,12 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
     @Override
     public void onComplete() {
-        if (chName.size() > 0)
+        if (chName.size() > 0) {
+            if (pos<urls.size())
             setUpView(pos);
+            else
+                setUpView(0);
+        }
     }
 
 

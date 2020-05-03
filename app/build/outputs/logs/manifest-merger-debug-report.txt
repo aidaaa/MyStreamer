@@ -121,28 +121,28 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:20:17-77
 	android:name
 		ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:20:27-74
-uses-permission#android.permission.ACCESS_WIFI_STATE
-ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:24:5-76
-	android:name
-		ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:24:22-73
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:25:5-79
+ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.exoplayer:exoplayer-core:2.10.8] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\7d432a86650c26aa5ee46e7cf3a78547\jetified-exoplayer-core-2.10.8\AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.exoplayer:exoplayer-core:2.10.8] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\7d432a86650c26aa5ee46e7cf3a78547\jetified-exoplayer-core-2.10.8\AndroidManifest.xml:24:5-79
 	android:name
-		ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:25:22-76
+		ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:24:22-76
 uses-permission#android.permission.READ_PHONE_STATE
-ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:26:5-75
+ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:25:5-75
 	android:name
-		ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:26:22-72
+		ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:25:22-72
 uses-permission#android.permission.WAKE_LOCK
-ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:27:5-68
+ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:26:5-68
 	android:name
-		ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:27:22-65
+		ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:26:22-65
 uses-permission#android.permission.INTERNET
-ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:29:5-67
+ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:27:5-67
 	android:name
-		ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:29:22-64
+		ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:27:22-64
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:29:5-76
+	android:name
+		ADDED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:29:22-73
 uses-sdk
 INJECTED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml

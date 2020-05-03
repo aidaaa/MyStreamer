@@ -3,6 +3,8 @@ package com.example.mystreamer.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,10 +18,12 @@ public class ShowChannelAdapter extends RecyclerView.Adapter<ShowChannelAdapter.
 {
     private OnItemClickListener listener;
     private ArrayList<String> chName;
+    private int width;
 
-    public ShowChannelAdapter(OnItemClickListener listener, ArrayList<String> chName) {
+    public ShowChannelAdapter(OnItemClickListener listener, ArrayList<String> chName,int width) {
         this.listener = listener;
         this.chName = chName;
+        this.width=width;
     }
 
     @NonNull
@@ -49,6 +53,10 @@ public class ShowChannelAdapter extends RecyclerView.Adapter<ShowChannelAdapter.
         public ShowChannelViewHolder(@NonNull View itemView) {
             super(itemView);
             ch_name_txt=itemView.findViewById(R.id.ch_name_txt);
+
+            final ViewGroup.LayoutParams layoutparams = (LinearLayout.LayoutParams) ch_name_txt.getLayoutParams();
+            layoutparams.width=width;
+            ch_name_txt.setLayoutParams(layoutparams);
         }
 
         void onBind(String chName){

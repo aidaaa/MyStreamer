@@ -10,21 +10,21 @@
 9        android:targetSdkVersion="28" />
 9-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml
 10
-11    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-11-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:24:5-76
-11-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:24:22-73
-12    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-12-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:25:5-79
-12-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:25:22-76
-13    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-13-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:26:5-75
-13-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:26:22-72
-14    <uses-permission android:name="android.permission.WAKE_LOCK" />
-14-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:27:5-68
-14-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:27:22-65
-15    <uses-permission android:name="android.permission.INTERNET" />
-15-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:29:5-67
-15-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:29:22-64
+11    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+11-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:24:5-79
+11-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:24:22-76
+12    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+12-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:25:5-75
+12-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:25:22-72
+13    <uses-permission android:name="android.permission.WAKE_LOCK" />
+13-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:26:5-68
+13-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:26:22-65
+14    <uses-permission android:name="android.permission.INTERNET" />
+14-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:27:5-67
+14-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:27:22-64
+15    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+15-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:29:5-76
+15-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:29:22-73
 16
 17    <application
 17-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:5:5-23:19
@@ -43,38 +43,39 @@
 24-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:10:9-44
 25        android:supportsRtl="true"
 25-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:11:9-35
-26        android:theme="@style/AppTheme"
-26-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:12:9-40
-27        android:usesCleartextTraffic="true" >
-27-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:13:9-44
-28        <activity
-28-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:14:9-22:20
-29            android:name="com.example.mystreamer.MainActivity"
-29-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:15:13-41
-30            android:configChanges="orientation|screenSize|layoutDirection" >
-30-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:16:13-75
-31            <intent-filter>
-31-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:17:13-21:29
-32                <action android:name="android.intent.action.MAIN" />
-32-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:18:17-69
-32-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:18:25-66
-33
-34                <category android:name="android.intent.category.LAUNCHER" />
-34-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:20:17-77
-34-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:20:27-74
-35            </intent-filter>
-36        </activity>
-37
-38        <provider
-38-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:23:9-27:43
-39            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
-39-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:24:13-79
-40            android:authorities="com.example.mystreamer.lifecycle-process"
-40-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:25:13-69
-41            android:exported="false"
-41-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:26:13-37
-42            android:multiprocess="true" />
-42-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:27:13-40
-43    </application>
-44
-45</manifest>
+26        android:testOnly="true"
+27        android:theme="@style/AppTheme"
+27-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:12:9-40
+28        android:usesCleartextTraffic="true" >
+28-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:13:9-44
+29        <activity
+29-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:14:9-22:20
+30            android:name="com.example.mystreamer.MainActivity"
+30-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:15:13-41
+31            android:configChanges="orientation|screenSize|layoutDirection" >
+31-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:16:13-75
+32            <intent-filter>
+32-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:17:13-21:29
+33                <action android:name="android.intent.action.MAIN" />
+33-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:18:17-69
+33-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:18:25-66
+34
+35                <category android:name="android.intent.category.LAUNCHER" />
+35-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:20:17-77
+35-->C:\Users\Aida\AndroidStudioProjects\MyStreamer\app\src\main\AndroidManifest.xml:20:27-74
+36            </intent-filter>
+37        </activity>
+38
+39        <provider
+39-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:23:9-27:43
+40            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+40-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:24:13-79
+41            android:authorities="com.example.mystreamer.lifecycle-process"
+41-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:25:13-69
+42            android:exported="false"
+42-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:26:13-37
+43            android:multiprocess="true" />
+43-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\Aida\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:27:13-40
+44    </application>
+45
+46</manifest>
