@@ -4,30 +4,38 @@ package com.example.mystreamer.dagger;
 import android.content.SharedPreferences;
 import dagger.internal.Factory;
 import dagger.internal.Preconditions;
+import javax.inject.Provider;
 
 public final class AndroidModule_GetSharedPreferencesFactory implements Factory<SharedPreferences> {
   private final AndroidModule module;
 
-  public AndroidModule_GetSharedPreferencesFactory(AndroidModule module) {
+  private final Provider<ContextClass> contextClassProvider;
+
+  public AndroidModule_GetSharedPreferencesFactory(
+      AndroidModule module, Provider<ContextClass> contextClassProvider) {
     this.module = module;
+    this.contextClassProvider = contextClassProvider;
   }
 
   @Override
   public SharedPreferences get() {
-    return provideInstance(module);
+    return provideInstance(module, contextClassProvider);
   }
 
-  public static SharedPreferences provideInstance(AndroidModule module) {
-    return proxyGetSharedPreferences(module);
+  public static SharedPreferences provideInstance(
+      AndroidModule module, Provider<ContextClass> contextClassProvider) {
+    return proxyGetSharedPreferences(module, contextClassProvider.get());
   }
 
-  public static AndroidModule_GetSharedPreferencesFactory create(AndroidModule module) {
-    return new AndroidModule_GetSharedPreferencesFactory(module);
+  public static AndroidModule_GetSharedPreferencesFactory create(
+      AndroidModule module, Provider<ContextClass> contextClassProvider) {
+    return new AndroidModule_GetSharedPreferencesFactory(module, contextClassProvider);
   }
 
-  public static SharedPreferences proxyGetSharedPreferences(AndroidModule instance) {
+  public static SharedPreferences proxyGetSharedPreferences(
+      AndroidModule instance, ContextClass contextClass) {
     return Preconditions.checkNotNull(
-        instance.getSharedPreferences(),
+        instance.getSharedPreferences(contextClass),
         "Cannot return null from a non-@Nullable @Provides method");
   }
 }

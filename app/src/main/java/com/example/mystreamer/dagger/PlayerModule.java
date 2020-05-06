@@ -26,15 +26,15 @@ public class PlayerModule
     }
 
     @Provides
-    public SimpleExoPlayer getSimpleExoPlayer(Context context,DefaultTrackSelector trackSelector)
+    public SimpleExoPlayer getSimpleExoPlayer(ContextClass contextClass,DefaultTrackSelector trackSelector)
     {
-        return ExoPlayerFactory.newSimpleInstance(context,trackSelector);
+        return ExoPlayerFactory.newSimpleInstance(contextClass.context,trackSelector);
     }
 
     @Provides
-    public DataSource.Factory getgetDataSourceFactory(Context context)
+    public DataSource.Factory getgetDataSourceFactory(ContextClass contextClass)
     {
-        return new DefaultHttpDataSourceFactory(Util.getUserAgent(context,"exoplayer"));
+        return new DefaultHttpDataSourceFactory(Util.getUserAgent(contextClass.context,"exoplayer"));
     }
 
     @Provides

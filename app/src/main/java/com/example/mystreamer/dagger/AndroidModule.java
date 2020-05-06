@@ -10,7 +10,7 @@ import dagger.Provides;
 @Module
 public class AndroidModule
 {
-    private Context context;
+    /*private Context context;
 
     public AndroidModule(Context context) {
         this.context = context;
@@ -20,11 +20,11 @@ public class AndroidModule
     public Context getContext()
     {
         return context;
-    }
+    }*/
 
     @Provides
-    public SharedPreferences getSharedPreferences()
+    public SharedPreferences getSharedPreferences(ContextClass contextClass)
     {
-        return PreferenceManager.getDefaultSharedPreferences(context);
+        return PreferenceManager.getDefaultSharedPreferences(contextClass.context);
     }
 }

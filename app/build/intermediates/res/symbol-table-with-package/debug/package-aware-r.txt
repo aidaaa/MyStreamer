@@ -1188,6 +1188,7 @@ drawable tooltip_frame_light
 id ALT
 id CTRL
 id FUNCTION
+id Live
 id META
 id SHIFT
 id SYM
@@ -1467,6 +1468,7 @@ id textinput_error
 id textinput_helper_text
 id texture_view
 id time
+id time_shift
 id title
 id titleDividerNoCustom
 id title_template

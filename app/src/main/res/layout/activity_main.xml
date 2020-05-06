@@ -39,5 +39,24 @@
     android:background="@android:color/transparent"
     android:visibility="invisible"/>
 
+    <Button
+        android:id="@+id/Live"
+        android:text="LIVE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:onClick="liveClick"/>
+
+    <Button
+        android:id="@+id/time_shift"
+        android:text="time_shift"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:onClick="timeShift"/>
+
 
 </RelativeLayout>

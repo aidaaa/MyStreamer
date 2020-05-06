@@ -20,8 +20,7 @@ public class App extends Application
     public PlayerComponent getPlayerComponent(AppCompatActivity appCompatActivity)
     {
         playerComponent= DaggerPlayerComponent.builder()
-                .androidModule(new AndroidModule(appCompatActivity.getApplicationContext()))
-                .playerModule(new PlayerModule())
+                .context(appCompatActivity.getApplicationContext())
                 .build();
         return playerComponent;
     }
