@@ -59,4 +59,27 @@
         android:onClick="timeShift"/>
 
 
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:background="@android:color/white"
+        android:inputType="date"
+        android:hint="DD/MM/YYYY"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"/>
+
+
+ <!--   <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:background="@android:color/white"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="time"
+        android:inputType="time"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"/>-->
+
 </RelativeLayout>
