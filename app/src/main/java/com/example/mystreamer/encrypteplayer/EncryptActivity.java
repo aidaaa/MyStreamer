@@ -45,7 +45,7 @@ import android.os.Bundle;
 
 public class EncryptActivity extends AppCompatActivity {
     private static final String AES_ALGORITHM = "AES";
-    private static final String AES_TRANSFORMATION = "AES/CTR/NoPadding";
+    private static final String AES_TRANSFORMATION = "AES/CBC/PKCS5Padding";
     private static final String PASSWORD = "1133";
     private static final byte[] SALT = {3, (byte) 253, (byte) 245, (byte) 149, 86, (byte) 148, (byte) 148, 43};
     private static final byte[] IV = {(byte) 139, (byte) 214, 102, 1, (byte) 150, (byte) 134, (byte) 236, (byte) 182, 89, 110, 20, 55, (byte) 243, 120, 76, (byte) 182};
@@ -63,11 +63,11 @@ public class EncryptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_encrypt);
 
         File  fileToBeCrypted = new File(this.getExternalFilesDir(null), "encrypt.mpg");
-        File  fileToBeDecrypted = new File(this.getExternalFilesDir(null), "encrypt.mpg.crypt");
-        File  fileDecryptedOutput = new File(this.getExternalFilesDir(null), "encrypt1.mpg");
+        File  fileToBeDecrypted = new File(this.getExternalFilesDir(null), "cbc.mp4");
+        File  fileDecryptedOutput = new File(this.getExternalFilesDir(null), "cbc_dicrypt.mp4");
 
         try {
-            //encryptfile(fileToBeCrypted, PASSWORD);
+           // encryptfile(fileToBeCrypted, PASSWORD);
             decrypt(fileToBeDecrypted, PASSWORD, fileDecryptedOutput);
         } catch (IOException e) {
             e.printStackTrace();
