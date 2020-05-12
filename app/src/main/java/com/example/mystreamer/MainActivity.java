@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.Time;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -41,6 +42,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
     MutableLiveData<String> base_url;
 
-    Date date=new Date();
+    Date date = new Date();
 
     int counter = 0;
-    boolean isLive=false;
+    boolean isLive = false;
 
     SimpleExoPlayer simpleExoPlayer;
     @Inject
@@ -94,10 +96,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     @Inject
     DataSource.Factory daFactory;
 
-    EditText edt_date;
-    int day;
-    int mon;
-    int year;
+    EditText edt_date, edt_time;
+    int day, mon, year, hour, min, sec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +123,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         prg_bar.setVisibility(View.VISIBLE);
 
 
-        edt_date = (EditText)findViewById(R.id.editText);
+        edt_date = (EditText) findViewById(R.id.editText);
+        edt_time = findViewById(R.id.edt_time);
 
 
         editor = getSharedPreferences("lastCh", MODE_PRIVATE).edit();
@@ -172,13 +173,6 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
                         recyclerView.setVisibility(View.INVISIBLE);
                         showRv = false;
                     }
-                   /* if (!showRv) {
-                        recyclerView.setVisibility(View.VISIBLE);
-                        showRv = true;
-                    } else if (showRv) {
-                        recyclerView.setVisibility(View.INVISIBLE);
-                        showRv = false;
-                    }*/
                 }
             }
 
@@ -196,10 +190,10 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         base_url.observe(this, new androidx.lifecycle.Observer<String>() {
             @Override
             public void onChanged(String s) {
-                if (isLive)
+             //   if (isLive)
                     setUpViewUrl(s);
-                else
-                getObservable(s);
+              //  else
+                  //  getObservable(s);
                 /*observer = Observable.just(1).timer(5000, TimeUnit.MILLISECONDS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -207,67 +201,132 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             }
         });
 
-       edt_date.addTextChangedListener(new TextWatcher() {
+        edt_date.addTextChangedListener(new TextWatcher() {
 
-           private String current = "";
-           private String ddmmyyyy = "DDMMYYYY";
-           private Calendar cal = Calendar.getInstance();
+            private String current = "";
+            private String ddmmyyyy = "DDMMYYYY";
+            private Calendar cal = Calendar.getInstance();
 
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
-               if (!s.toString().equals(current)) {
-                   String clean = s.toString().replaceAll("[^\\d.]", "");
-                   String cleanC = current.replaceAll("[^\\d.]", "");
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().equals(current)) {
+                    String clean = s.toString().replaceAll("[^\\d.]", "");
+                    String cleanC = current.replaceAll("[^\\d.]", "");
 
-                   int cl = clean.length();
-                   int sel = cl;
-                   for (int i = 2; i <= cl && i < 6; i += 2) {
-                       sel++;
-                   }
-                   //Fix for pressing delete next to a forward slash
-                   if (clean.equals(cleanC)) sel--;
+                    int cl = clean.length();
+                    int sel = cl;
+                    for (int i = 2; i <= cl && i < 6; i += 2) {
+                        sel++;
+                    }
+                    //Fix for pressing delete next to a forward slash
+                    if (clean.equals(cleanC)) sel--;
 
-                   if (clean.length() < 8){
-                       clean = clean + ddmmyyyy.substring(clean.length());
-                   }else{
-                       //This part makes sure that when we finish entering numbers
-                       //the date is correct, fixing it otherwise
-                        day  = Integer.parseInt(clean.substring(0,2));
-                        mon  = Integer.parseInt(clean.substring(2,4));
-                        year = Integer.parseInt(clean.substring(4,8));
+                    if (clean.length() < 8) {
+                        clean = clean + ddmmyyyy.substring(clean.length());
+                    } else {
+                        //This part makes sure that when we finish entering numbers
+                        //the date is correct, fixing it otherwise
+                        day = Integer.parseInt(clean.substring(0, 2));
+                        mon = Integer.parseInt(clean.substring(2, 4));
+                        year = Integer.parseInt(clean.substring(4, 8));
 
-                       if(mon > 12) mon = 12;
-                       cal.set(Calendar.MONTH, mon-1);
-                       year = (year<1900)?1900:(year>2100)?2100:year;
-                       cal.set(Calendar.YEAR, year);
-                       // ^ first set year for the line below to work correctly
-                       //with leap years - otherwise, date e.g. 29/02/2012
-                       //would be automatically corrected to 28/02/2012
+                        if (mon > 12) mon = 12;
+                        cal.set(Calendar.MONTH, mon - 1);
+                        year = (year < 1900) ? 1900 : (year > 2100) ? 2100 : year;
+                        cal.set(Calendar.YEAR, year);
+                        // ^ first set year for the line below to work correctly
+                        //with leap years - otherwise, date e.g. 29/02/2012
+                        //would be automatically corrected to 28/02/2012
 
-                       day = (day > cal.getActualMaximum(Calendar.DATE))? cal.getActualMaximum(Calendar.DATE):day;
-                       clean = String.format("%02d%02d%02d",day, mon, year);
-                   }
+                        day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum(Calendar.DATE) : day;
+                        clean = String.format("%02d%02d%02d", day, mon, year);
+                    }
 
-                   clean = String.format("%s/%s/%s", clean.substring(0, 2),
-                           clean.substring(2, 4),
-                           clean.substring(4, 8));
+                    clean = String.format("%s/%s/%s", clean.substring(0, 2),
+                            clean.substring(2, 4),
+                            clean.substring(4, 8));
 
-                   sel = sel < 0 ? 0 : sel;
-                   current = clean;
-                   edt_date.setText(current);
-                   edt_date.setSelection(sel < current.length() ? sel : current.length());
-               }
-           }
+                    sel = sel < 0 ? 0 : sel;
+                    current = clean;
+                    edt_date.setText(current);
+                    edt_date.setSelection(sel < current.length() ? sel : current.length());
+                }
+            }
 
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-           }
+            }
 
-           @Override
-           public void afterTextChanged(Editable s) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
 
-       });
+        });
+
+        edt_time.addTextChangedListener(new TextWatcher() {
+
+            private String current = "";
+            private String ddmmyyyy = "HHMMSS";
+            private Calendar cal = Calendar.getInstance();
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().equals(current)) {
+                    String clean = s.toString().replaceAll("[^\\d.]", "");
+                    String cleanC = current.replaceAll("[^\\d.]", "");
+
+                    int cl = clean.length();
+                    int sel = cl;
+                    for (int i = 2; i <= cl && i < 6; i += 2) {
+                        sel++;
+                    }
+                    //Fix for pressing delete next to a forward slash
+                    if (clean.equals(cleanC)) sel--;
+
+                    if (clean.length() < 6) {
+                        clean = clean + ddmmyyyy.substring(clean.length());
+                    } else {
+                        //This part makes sure that when we finish entering numbers
+                        //the date is correct, fixing it otherwise
+                        hour = Integer.parseInt(clean.substring(0, 2));
+                        min = Integer.parseInt(clean.substring(2, 4));
+                        sec = Integer.parseInt(clean.substring(4, 6));
+
+                        if (hour > 23) hour = 00;
+                        //cal.set(Calendar.MONTH, hour - 1);
+                        if (min > 59) min = 00;
+                        if (sec > 59) sec = 00;
+                        // cal.set(Calendar.YEAR, year);
+                        // ^ first set year for the line below to work correctly
+                        //with leap years - otherwise, date e.g. 29/02/2012
+                        //would be automatically corrected to 28/02/2012
+
+                        //  day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum(Calendar.DATE) : day;
+                        clean = String.format("%02d%02d%02d", hour, min, sec);
+                    }
+
+                    clean = String.format("%s:%s:%s", clean.substring(0, 2),
+                            clean.substring(2, 4),
+                            clean.substring(4, 6));
+
+                    sel = sel < 0 ? 0 : sel;
+                    current = clean;
+                    edt_time.setText(current);
+                    edt_time.setSelection(sel < current.length() ? sel : current.length());
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+        });
     }
 
     @Override
@@ -387,7 +446,14 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         return new DisposableObserver<Long>() {
             @Override
             public void onNext(Long aLong) {
-                setUpViewUrl(url);
+                CallAPI callAPI=new CallAPI();
+                try {
+                    base_url = callAPI.execute(url).get();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -402,8 +468,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         };
     }
 
-    public DisposableObserver<Long> getObservable(String url)
-    {
+    public DisposableObserver<Long> getObservable(String url) {
         return observer = Observable.just(1).timer(5000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -482,7 +547,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
     public void liveClick(View view) {
         CallAPI callAPI = new CallAPI();
-        isLive=true;
+        isLive = true;
         try {
             base_url = callAPI.execute("http://192.168.10.85:3030").get();
 
@@ -496,91 +561,99 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
          playerViewModel.playLive();*/
     }
 
-    public boolean checkDate(String date)
-    {
+    public boolean checkDate(String date) {
         try {
-        boolean resault=true;
-        Date c = Calendar.getInstance().getTime();
+            boolean resault = true;
+            Date c = Calendar.getInstance().getTime();
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd-hh:mm:ss");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd-hh:mm:ss");
 
-          Date  date1=df.parse(date);
+            Date date1 = df.parse(date);
 
 
-        if (date1.after(c))
-        {
-            resault= false;
-        }
-        if (date1.before(c))
-        {
-            resault= true;
-        }
-        return resault;
+            if (date1.after(c)) {
+                resault = false;
+            }
+            if (date1.before(c)) {
+                resault = true;
+            }
+            return resault;
         } catch (ParseException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public void timeShift(View view) {
-        counter++;
-        isLive=false;
-        if (observer!=null) {
+    public void timeSelect(View view) {
+
+        isLive = false;
+
+        if (observer != null) {
             if (!observer.isDisposed())
                 observer.dispose();
         }
+
         CallAPI callAPI = new CallAPI();
         try {
-            int min = counter * 10;
-            if (min < 60) {
-               /* StringBuilder url = new StringBuilder();
-                url.append("http://192.168.10.85:3030/");
-                url.append("2020");
-                url.append("_");
-                url.append("05");
-                url.append("_");
-                url.append("09");
-                url.append("_");
-                url.append("-");*/
+            StringBuilder url = new StringBuilder().append("http://192.168.10.85:3030/");
+            StringBuilder time = new StringBuilder();
+            time.append(year)
+                    .append("_");
 
-                StringBuilder url = new StringBuilder().append("http://192.168.10.85:3030/");
-                StringBuilder time=new StringBuilder();
-                        time.append(year)
+            if (mon < 10) {
+                time.append("0")
+                        .append(mon)
                         .append("_");
+            } else {
+                time.append(mon)
+                        .append("_");
+            }
 
-                        if (mon<10) {
-                            time.append("0")
-                                    .append(mon)
-                                    .append("_");
-                        }
-                        else {
-                            time.append(mon)
-                                    .append("_");
-                        }
+            if (day < 10) {
+                time.append("0")
+                        .append(day)
+                        .append("-");
+            } else {
+                time.append(day)
+                        .append("-");
+            }
 
-                if (day<10) {
-                    time.append("0")
-                            .append(day)
-                            .append("-");
-                }
-                else {
-                    time.append(day)
-                            .append("-");
-                }
-
-                        time.append("13")
+              /*  time.append("13")
                         .append(":")
                         .append(min)
                         .append(":")
-                        .append("00");
+                        .append("00");*/
 
-                url.append(time);
+            if (hour < 10) {
+                time.append("0")
+                        .append(hour)
+                        .append(":");
+            } else {
+                time.append(hour)
+                        .append(":");
+            }
+            if (min < 10) {
+                time.append("0")
+                        .append(min)
+                        .append(":");
+            } else {
+                time.append(min)
+                        .append(":");
+            }
+            if (sec < 10) {
+                time.append("0")
+                        .append(sec);
+            } else {
+                time.append(sec);
+            }
 
-                if (checkDate(time.toString()))
-                {
-                    base_url = callAPI.execute(url.toString()).get();
-                }
-            } /*else {
+
+            url.append(time);
+
+            if (checkDate(time.toString())) {
+                base_url = callAPI.execute(url.toString()).get();
+            }
+             /*else {
                 base_url = callAPI.execute("http://192.168.10.85:3030/2020_05_09-09:00:00").get();
             }*/
         } catch (ExecutionException e) {
@@ -588,6 +661,93 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void timeShift(View view) {
+
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+        int seconds = calendar.get(Calendar.SECOND);
+
+        CallAPI callAPI=new CallAPI();
+
+        counter++;
+        isLive = false;
+
+        if (observer != null) {
+            if (!observer.isDisposed())
+                observer.dispose();
+        }
+
+        observer=Observable.timer(3000,TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableObserver<Long>() {
+                        @Override
+                        public void onNext(Long aLong) {
+                            int sec = counter * 10;
+                            int new_sec=sec+seconds;
+
+                            StringBuilder url = new StringBuilder().append("http://192.168.10.85:3030/");
+                            StringBuilder time = new StringBuilder();
+                            time.append(year)
+                                    .append("_");
+
+                            if (mon < 10) {
+                                time.append("0")
+                                        .append(mon)
+                                        .append("_");
+                            } else {
+                                time.append(mon)
+                                        .append("_");
+                            }
+
+                            if (day < 10) {
+                                time.append("0")
+                                        .append(day)
+                                        .append("-");
+                            } else {
+                                time.append(day)
+                                        .append("-");
+                            }
+
+                            if (new_sec < 60) {
+                                time.append(hour)
+                                        .append(":")
+                                        .append(minutes)
+                                        .append(":")
+                                        .append(new_sec);
+                            } else {
+                                int min= new_sec/60;
+                                int sec1= new_sec%60;
+                                System.out.println(sec1);
+                                time.append(hour)
+                                        .append(":")
+                                        .append(minutes+min)
+                                        .append(":")
+                                        .append(seconds+sec1);
+                            }
+                            url.append(time);
+                            if (checkDate(time.toString())) {
+                                try {
+                                    base_url = callAPI.execute(url.toString()).get();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
     }
 
     public class CallAPI extends AsyncTask<String, String, MutableLiveData<String>> {
@@ -629,3 +789,4 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         }
     }
 }
+

@@ -1,4 +1,3 @@
-/*
 package com.example.mystreamer.encrypteplayer;
 
 import android.net.Uri;
@@ -29,8 +28,9 @@ public final class EncryptedFileDataSource implements DataSource {
     private Cipher mCipher;
     private SecretKeySpec mSecretKeySpec;
     private IvParameterSpec mIvParameterSpec;
+    DataSpec dataSpec;
 
-    public EncryptedFileDataSource(Cipher cipher, SecretKeySpec secretKeySpec, IvParameterSpec ivParameterSpec, TransferListener<? super EncryptedFileDataSource> listener) {
+    public EncryptedFileDataSource(Cipher cipher, SecretKeySpec secretKeySpec, IvParameterSpec ivParameterSpec, TransferListener listener) {
         mCipher = cipher;
         mSecretKeySpec = secretKeySpec;
         mIvParameterSpec = ivParameterSpec;
@@ -49,6 +49,7 @@ public final class EncryptedFileDataSource implements DataSource {
             return mBytesRemaining;
         }
         // #getUri is part of the contract...
+        this.dataSpec=dataSpec;
         mUri = dataSpec.uri;
         // put all our throwable work in a single block, wrap the error in a custom Exception
         try {
@@ -62,7 +63,7 @@ public final class EncryptedFileDataSource implements DataSource {
         mOpened = true;
         // notify
         if (mTransferListener != null) {
-            mTransferListener.onTransferStart(this, dataSpec);
+            mTransferListener.onTransferStart(this, dataSpec , true);
         }
         // report
         return mBytesRemaining;
@@ -118,7 +119,7 @@ public final class EncryptedFileDataSource implements DataSource {
         }
         // notify
         if (mTransferListener != null) {
-            mTransferListener.onBytesTransferred(this, bytesRead);
+            mTransferListener.onBytesTransferred(this,dataSpec,true, bytesRead);
         }
         // report
         return bytesRead;
@@ -150,7 +151,7 @@ public final class EncryptedFileDataSource implements DataSource {
             if (mOpened) {
                 mOpened = false;
                 if (mTransferListener != null) {
-                    mTransferListener.onTransferEnd(this);
+                    mTransferListener.onTransferEnd(this,dataSpec,true);
                 }
             }
         }
@@ -223,4 +224,3 @@ public final class EncryptedFileDataSource implements DataSource {
     }
 
 }
-*/

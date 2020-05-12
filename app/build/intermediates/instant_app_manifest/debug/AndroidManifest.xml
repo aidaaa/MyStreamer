@@ -9,6 +9,8 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="28" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -28,7 +30,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name="com.example.mystreamer.MainActivity"
+            android:name="com.example.mystreamer.encrypteplayer.EncryptActivity"
             android:configChanges="orientation|screenSize|layoutDirection" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

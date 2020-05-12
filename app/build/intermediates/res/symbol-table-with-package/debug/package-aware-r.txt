@@ -436,7 +436,6 @@ attr listPreferredItemPaddingStart
 attr logo
 attr logoDescription
 attr loopCount
-attr mask
 attr materialButtonStyle
 attr materialCardViewStyle
 attr maxActionInlineWidth
@@ -1277,6 +1276,7 @@ id contentPanel
 id coordinator
 id custom
 id customPanel
+id dataBinding
 id decor_content_parent
 id default_activity_button
 id design_bottom_sheet
@@ -1290,6 +1290,7 @@ id direct
 id disableHome
 id editText
 id edit_query
+id edt_time
 id end
 id end_padder
 id enterAlways
@@ -1384,6 +1385,8 @@ id notification_main_column
 id notification_main_column_container
 id off
 id on
+id onAttachStateChangeListener
+id onDateChanged
 id one
 id outline
 id pW
@@ -1464,12 +1467,14 @@ id text2
 id textSpacerNoButtons
 id textSpacerNoTitle
 id textStart
+id textWatcher
 id text_input_password_toggle
 id textinput_counter
 id textinput_error
 id textinput_helper_text
 id texture_view
 id time
+id time_select
 id time_shift
 id title
 id titleDividerNoCustom
@@ -2273,7 +2278,6 @@ styleable LinearConstraintLayout android_orientation
 styleable LinearLayoutCompat android_gravity android_orientation android_baselineAligned android_baselineAlignedChildIndex android_weightSum divider dividerPadding measureWithLargestChild showDividers
 styleable LinearLayoutCompat_Layout android_layout_gravity android_layout_width android_layout_height android_layout_weight
 styleable ListPopupWindow android_dropDownHorizontalOffset android_dropDownVerticalOffset
-styleable MaskedEditText mask
 styleable MaterialButton android_insetLeft android_insetRight android_insetTop android_insetBottom backgroundTint backgroundTintMode cornerRadius icon iconGravity iconPadding iconSize iconTint iconTintMode rippleColor strokeColor strokeWidth
 styleable MaterialCardView strokeColor strokeWidth
 styleable MaterialComponentsTheme bottomSheetDialogTheme bottomSheetStyle chipGroupStyle chipStandaloneStyle chipStyle colorAccent colorBackgroundFloating colorPrimary colorPrimaryDark colorSecondary editTextStyle floatingActionButtonStyle materialButtonStyle materialCardViewStyle navigationViewStyle scrimBackground snackbarButtonStyle tabStyle textAppearanceBody1 textAppearanceBody2 textAppearanceButton textAppearanceCaption textAppearanceHeadline1 textAppearanceHeadline2 textAppearanceHeadline3 textAppearanceHeadline4 textAppearanceHeadline5 textAppearanceHeadline6 textAppearanceOverline textAppearanceSubtitle1 textAppearanceSubtitle2 textInputStyle

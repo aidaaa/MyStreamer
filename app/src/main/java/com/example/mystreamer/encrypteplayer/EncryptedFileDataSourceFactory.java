@@ -1,4 +1,3 @@
-/*
 package com.example.mystreamer.encrypteplayer;
 
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -11,9 +10,9 @@ public class EncryptedFileDataSourceFactory implements DataSource.Factory {
     private Cipher mCipher;
     private SecretKeySpec mSecretKeySpec;
     private IvParameterSpec mIvParameterSpec;
-    private TransferListener<? super DataSource> mTransferListener;
+    private TransferListener mTransferListener;
 
-    public EncryptedFileDataSourceFactory(Cipher cipher, SecretKeySpec secretKeySpec, IvParameterSpec ivParameterSpec, TransferListener<? super DataSource> listener) {
+    public EncryptedFileDataSourceFactory(Cipher cipher, SecretKeySpec secretKeySpec, IvParameterSpec ivParameterSpec, TransferListener listener) {
         mCipher = cipher;
         mSecretKeySpec = secretKeySpec;
         mIvParameterSpec = ivParameterSpec;
@@ -25,4 +24,3 @@ public class EncryptedFileDataSourceFactory implements DataSource.Factory {
         return new EncryptedFileDataSource(mCipher, mSecretKeySpec, mIvParameterSpec, mTransferListener);
     }
 }
-*/
