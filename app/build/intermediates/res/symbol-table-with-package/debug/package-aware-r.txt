@@ -1111,6 +1111,7 @@ drawable abc_textfield_search_material
 drawable abc_vector_test
 drawable avd_hide_password
 drawable avd_show_password
+drawable backward
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -1155,6 +1156,7 @@ drawable exo_notification_previous
 drawable exo_notification_rewind
 drawable exo_notification_small_icon
 drawable exo_notification_stop
+drawable forward
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_menu_camera
@@ -1167,6 +1169,7 @@ drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_tv
+drawable live
 drawable logo
 drawable mtrl_snackbar_background
 drawable mtrl_tabs_default_indicator
@@ -1183,12 +1186,12 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+drawable play
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
 id ALT
 id CTRL
 id FUNCTION
-id Live
 id META
 id SHIFT
 id SYM
@@ -1273,6 +1276,7 @@ id collapsingToolbarLayout
 id container
 id content
 id contentPanel
+id control
 id coordinator
 id custom
 id customPanel
@@ -1288,8 +1292,8 @@ id dialog_button
 id dimensions
 id direct
 id disableHome
-id editText
 id edit_query
+id edt_date
 id edt_time
 id end
 id end_padder
@@ -1355,6 +1359,7 @@ id line1
 id line3
 id listMode
 id list_item
+id live_btn
 id masked
 id media_actions
 id message
@@ -1388,6 +1393,8 @@ id on
 id onAttachStateChangeListener
 id onDateChanged
 id one
+id one_min_back_shift_btn
+id one_min_next_shift_btn
 id outline
 id pW
 id pW1
@@ -1398,6 +1405,7 @@ id parentPanel
 id parent_matrix
 id percent
 id pin
+id play_btn
 id prg_bar
 id progress_circular
 id progress_horizontal
@@ -1462,6 +1470,8 @@ id tag_screen_reader_focusable
 id tag_transition_group
 id tag_unhandled_key_event_manager
 id tag_unhandled_key_listeners
+id ten_sec_next_shift_btn
+id ten_ses_back_shift_btn
 id text
 id text2
 id textSpacerNoButtons
@@ -1474,8 +1484,6 @@ id textinput_error
 id textinput_helper_text
 id texture_view
 id time
-id time_select
-id time_shift
 id title
 id titleDividerNoCustom
 id title_template
@@ -1558,10 +1566,10 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
-layout activity_encrypt
 layout activity_main
 layout activity_main2
 layout ch_rv_item
+layout controller
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
@@ -1577,6 +1585,7 @@ layout design_navigation_item_subheader
 layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_password_icon
+layout exo_controller
 layout exo_list_divider
 layout exo_playback_control_view
 layout exo_player_control_view

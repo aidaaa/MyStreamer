@@ -1,6 +1,7 @@
 package com.example.mystreamer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.text.format.Time;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +25,9 @@ import android.widget.Toast;
 
 import com.example.mystreamer.adapter.ShowChannelAdapter;
 import com.example.mystreamer.dagger.app.App;
+import com.example.mystreamer.dataBinding.DateViewModel;
+import com.example.mystreamer.dataBinding.TimeViewModel;
+import com.example.mystreamer.databinding.ActivityMainBinding;
 import com.example.mystreamer.viewmodel.PlayerViewModel;
 import com.example.mystreamer.xml.Xml;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -36,8 +41,12 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -70,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     RecyclerView rv;
     RelativeLayout layout;
     ProgressBar prg_bar;
+    LinearLayout control;
     int pos = 0;
     Xml xml = new Xml();
     boolean isStop = false;
@@ -85,9 +95,6 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
     MutableLiveData<String> base_url;
 
-    Date date = new Date();
-
-    int counter = 0;
     boolean isLive = false;
 
     SimpleExoPlayer simpleExoPlayer;
@@ -97,12 +104,19 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     DataSource.Factory daFactory;
 
     EditText edt_date, edt_time;
-    int day, mon, year, hour, min, sec;
+    // int day, mon, year, hour, min, sec;
+
+    File fileToBeDecrypted;
+    private int hours, minutes, seconds, yeaer, month, daay;
+    DateViewModel dateViewModel = new DateViewModel();
+    TimeViewModel timeViewModel = new TimeViewModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        ActivityMainBinding mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mainBinding.setActivity(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -111,21 +125,54 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        layout = findViewById(R.id.layout);
+        Calendar calendar = Calendar.getInstance();
+        hours = calendar.get(Calendar.HOUR_OF_DAY);
+        minutes = calendar.get(Calendar.MINUTE);
+        seconds = calendar.get(Calendar.SECOND);
+        yeaer = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        daay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        base_url = new MutableLiveData<>();
+        if (seconds < 10)
+            timeViewModel.setSec(String.valueOf("0" + seconds));
+        else
+            timeViewModel.setSec(String.valueOf(seconds));
+        if (minutes < 10)
+            timeViewModel.setMin(String.valueOf("0" + minutes));
+        else
+            timeViewModel.setMin(String.valueOf(minutes));
+        if (hours < 10)
+            timeViewModel.setHour(String.valueOf("0" + hours));
+        else
+            timeViewModel.setHour(String.valueOf(hours));
+        if (daay < 10)
+            dateViewModel.setDay(String.valueOf("0" + daay));
+        else
+            dateViewModel.setDay(String.valueOf(daay));
+        if (month < 10)
+            dateViewModel.setMonth(String.valueOf("0" + month));
+        else
+            dateViewModel.setMonth(String.valueOf(month));
 
-        recyclerView = findViewById(R.id.rv);
-        txt = findViewById(R.id.txt);
 
-        pw = findViewById(R.id.pW1);
-        prg_bar = findViewById(R.id.prg_bar);
+        dateViewModel.setYear(String.valueOf(yeaer));
+        dateViewModel.setMonth(String.valueOf(month));
+        dateViewModel.setDay(String.valueOf(daay));
+
+        mainBinding.setDateVm(dateViewModel);
+        mainBinding.setTimeVm(timeViewModel);
+
+        fileToBeDecrypted = new File(this.getExternalFilesDir(null), "down.mp4");
+
+        layout = mainBinding.layout;
+        control = mainBinding.control;
+        recyclerView = mainBinding.rv;
+        txt = mainBinding.txt;
+        pw = mainBinding.pW1;
+        prg_bar = mainBinding.prgBar;
         prg_bar.setVisibility(View.VISIBLE);
 
-
-        edt_date = (EditText) findViewById(R.id.editText);
-        edt_time = findViewById(R.id.edt_time);
-
+        base_url = new MutableLiveData<>();
 
         editor = getSharedPreferences("lastCh", MODE_PRIVATE).edit();
         prefs = getSharedPreferences("lastCh", MODE_PRIVATE);
@@ -181,19 +228,23 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             public void onDoubleClick() {
                 super.onDoubleClick();
                 //TODO --->for archive
-
+                if (control.getVisibility() == View.INVISIBLE) {
+                    control.setVisibility(View.VISIBLE);
+                } else if (control.getVisibility() == View.VISIBLE) {
+                    control.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
-        setUpViewUrl("http://192.168.10.85:3030");
+        //setUpViewUrl("http://192.168.10.85:3030");
 
         base_url.observe(this, new androidx.lifecycle.Observer<String>() {
             @Override
             public void onChanged(String s) {
-             //   if (isLive)
-                    setUpViewUrl(s);
-              //  else
-                  //  getObservable(s);
+                //   if (isLive)
+                setUpViewUrl(s);
+                //  else
+                //  getObservable(s);
                 /*observer = Observable.just(1).timer(5000, TimeUnit.MILLISECONDS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -201,132 +252,6 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             }
         });
 
-        edt_date.addTextChangedListener(new TextWatcher() {
-
-            private String current = "";
-            private String ddmmyyyy = "DDMMYYYY";
-            private Calendar cal = Calendar.getInstance();
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().equals(current)) {
-                    String clean = s.toString().replaceAll("[^\\d.]", "");
-                    String cleanC = current.replaceAll("[^\\d.]", "");
-
-                    int cl = clean.length();
-                    int sel = cl;
-                    for (int i = 2; i <= cl && i < 6; i += 2) {
-                        sel++;
-                    }
-                    //Fix for pressing delete next to a forward slash
-                    if (clean.equals(cleanC)) sel--;
-
-                    if (clean.length() < 8) {
-                        clean = clean + ddmmyyyy.substring(clean.length());
-                    } else {
-                        //This part makes sure that when we finish entering numbers
-                        //the date is correct, fixing it otherwise
-                        day = Integer.parseInt(clean.substring(0, 2));
-                        mon = Integer.parseInt(clean.substring(2, 4));
-                        year = Integer.parseInt(clean.substring(4, 8));
-
-                        if (mon > 12) mon = 12;
-                        cal.set(Calendar.MONTH, mon - 1);
-                        year = (year < 1900) ? 1900 : (year > 2100) ? 2100 : year;
-                        cal.set(Calendar.YEAR, year);
-                        // ^ first set year for the line below to work correctly
-                        //with leap years - otherwise, date e.g. 29/02/2012
-                        //would be automatically corrected to 28/02/2012
-
-                        day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum(Calendar.DATE) : day;
-                        clean = String.format("%02d%02d%02d", day, mon, year);
-                    }
-
-                    clean = String.format("%s/%s/%s", clean.substring(0, 2),
-                            clean.substring(2, 4),
-                            clean.substring(4, 8));
-
-                    sel = sel < 0 ? 0 : sel;
-                    current = clean;
-                    edt_date.setText(current);
-                    edt_date.setSelection(sel < current.length() ? sel : current.length());
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-        });
-
-        edt_time.addTextChangedListener(new TextWatcher() {
-
-            private String current = "";
-            private String ddmmyyyy = "HHMMSS";
-            private Calendar cal = Calendar.getInstance();
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().equals(current)) {
-                    String clean = s.toString().replaceAll("[^\\d.]", "");
-                    String cleanC = current.replaceAll("[^\\d.]", "");
-
-                    int cl = clean.length();
-                    int sel = cl;
-                    for (int i = 2; i <= cl && i < 6; i += 2) {
-                        sel++;
-                    }
-                    //Fix for pressing delete next to a forward slash
-                    if (clean.equals(cleanC)) sel--;
-
-                    if (clean.length() < 6) {
-                        clean = clean + ddmmyyyy.substring(clean.length());
-                    } else {
-                        //This part makes sure that when we finish entering numbers
-                        //the date is correct, fixing it otherwise
-                        hour = Integer.parseInt(clean.substring(0, 2));
-                        min = Integer.parseInt(clean.substring(2, 4));
-                        sec = Integer.parseInt(clean.substring(4, 6));
-
-                        if (hour > 23) hour = 00;
-                        //cal.set(Calendar.MONTH, hour - 1);
-                        if (min > 59) min = 00;
-                        if (sec > 59) sec = 00;
-                        // cal.set(Calendar.YEAR, year);
-                        // ^ first set year for the line below to work correctly
-                        //with leap years - otherwise, date e.g. 29/02/2012
-                        //would be automatically corrected to 28/02/2012
-
-                        //  day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum(Calendar.DATE) : day;
-                        clean = String.format("%02d%02d%02d", hour, min, sec);
-                    }
-
-                    clean = String.format("%s:%s:%s", clean.substring(0, 2),
-                            clean.substring(2, 4),
-                            clean.substring(4, 6));
-
-                    sel = sel < 0 ? 0 : sel;
-                    current = clean;
-                    edt_time.setText(current);
-                    edt_time.setSelection(sel < current.length() ? sel : current.length());
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-        });
     }
 
     @Override
@@ -442,39 +367,6 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     }
 
 
-    public DisposableObserver<Long> getObserver(String url) {
-        return new DisposableObserver<Long>() {
-            @Override
-            public void onNext(Long aLong) {
-                CallAPI callAPI=new CallAPI();
-                try {
-                    base_url = callAPI.execute(url).get();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-    }
-
-    public DisposableObserver<Long> getObservable(String url) {
-        return observer = Observable.just(1).timer(5000, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(getObserver(url));
-    }
-
     public void setUpView(int pos) {
         prg_bar.setVisibility(View.VISIBLE);
         if (pos < urls.size()) {
@@ -546,10 +438,10 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     }
 
     public void liveClick(View view) {
-        CallAPI callAPI = new CallAPI();
+        LiveAPi callAPI = new LiveAPi();
         isLive = true;
         try {
-            base_url = callAPI.execute("http://192.168.10.85:3030").get();
+            base_url = callAPI.execute().get();
 
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -584,7 +476,9 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         }
     }
 
-    public void timeSelect(View view) {
+
+
+   /* public void timeSelect(View view) {
 
         isLive = false;
 
@@ -618,11 +512,11 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
                         .append("-");
             }
 
-              /*  time.append("13")
+              *//*  time.append("13")
                         .append(":")
                         .append(min)
                         .append(":")
-                        .append("00");*/
+                        .append("00");*//*
 
             if (hour < 10) {
                 time.append("0")
@@ -653,101 +547,143 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             if (checkDate(time.toString())) {
                 base_url = callAPI.execute(url.toString()).get();
             }
-             /*else {
+             *//*else {
                 base_url = callAPI.execute("http://192.168.10.85:3030/2020_05_09-09:00:00").get();
-            }*/
+            }*//*
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public void timeShift(View view) {
+    public void timeShiftForWardSec(View view) {
 
-        Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minutes = calendar.get(Calendar.MINUTE);
-        int seconds = calendar.get(Calendar.SECOND);
-
-        CallAPI callAPI=new CallAPI();
-
-        counter++;
-        isLive = false;
-
-        if (observer != null) {
-            if (!observer.isDisposed())
-                observer.dispose();
+        seconds = 10 + seconds;
+        if (seconds >= 60) {
+            seconds = seconds % 60;
+            minutes++;
+            if (minutes >= 60) {
+                minutes = minutes % 60;
+                hours++;
+            }
+        }
+        if (hours==24)
+        {
+            daay++;
+            hours=0;
         }
 
-        observer=Observable.timer(3000,TimeUnit.MILLISECONDS)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableObserver<Long>() {
-                        @Override
-                        public void onNext(Long aLong) {
-                            int sec = counter * 10;
-                            int new_sec=sec+seconds;
+        if (seconds < 10)
+            timeViewModel.setSec("0" + seconds);
+        else
+            timeViewModel.setSec(String.valueOf(seconds));
+        if (minutes < 10)
+            timeViewModel.setMin("0" + minutes);
+        else
+            timeViewModel.setMin(String.valueOf(minutes));
+        if (hours < 10)
+            timeViewModel.setHour("0" + hours);
+        else
+            timeViewModel.setHour(String.valueOf(hours));
+        if (daay<10)
+            dateViewModel.setDay("0"+daay);
+        else
+            dateViewModel.setDay(String.valueOf(daay));
 
-                            StringBuilder url = new StringBuilder().append("http://192.168.10.85:3030/");
-                            StringBuilder time = new StringBuilder();
-                            time.append(year)
-                                    .append("_");
 
-                            if (mon < 10) {
-                                time.append("0")
-                                        .append(mon)
-                                        .append("_");
-                            } else {
-                                time.append(mon)
-                                        .append("_");
-                            }
+    }
 
-                            if (day < 10) {
-                                time.append("0")
-                                        .append(day)
-                                        .append("-");
-                            } else {
-                                time.append(day)
-                                        .append("-");
-                            }
+    public void timeShiftForWardMin(View view) {
 
-                            if (new_sec < 60) {
-                                time.append(hour)
-                                        .append(":")
-                                        .append(minutes)
-                                        .append(":")
-                                        .append(new_sec);
-                            } else {
-                                int min= new_sec/60;
-                                int sec1= new_sec%60;
-                                System.out.println(sec1);
-                                time.append(hour)
-                                        .append(":")
-                                        .append(minutes+min)
-                                        .append(":")
-                                        .append(seconds+sec1);
-                            }
-                            url.append(time);
-                            if (checkDate(time.toString())) {
-                                try {
-                                    base_url = callAPI.execute(url.toString()).get();
-                                } catch (ExecutionException e) {
-                                    e.printStackTrace();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
+        minutes = 1 + minutes;
+        if (minutes > 59) {
+            minutes = 60-minutes;
+            hours++;
+        }
+        if (hours==24)
+        {
+            daay++;
+            hours=0;
+        }
 
-                        @Override
-                        public void onError(Throwable e) {
-                        }
 
-                        @Override
-                        public void onComplete() {
-                        }
-                    });
+        if (minutes < 10)
+            timeViewModel.setMin(String.valueOf("0" + minutes));
+        else
+            timeViewModel.setMin(String.valueOf(minutes));
+        if (hours < 10)
+            timeViewModel.setHour(String.valueOf("0" + hours));
+        else
+            timeViewModel.setHour(String.valueOf(hours));
+
+
+    }
+
+    public void timeShiftBackWardSec(View view) {
+
+        seconds = seconds - 10;
+        if (seconds < 0) {
+            seconds = 60 + seconds;
+            minutes--;
+
+            if (seconds == 0) {
+                seconds = 59;
+                minutes--;
+            }
+            if (minutes < 0) {
+                minutes = 60 + minutes;
+                hours--;
+            }
+            if (minutes == 0) {
+                minutes = 59;
+                hours--;
+            }
+        }
+
+        if (seconds < 10)
+            timeViewModel.setSec(String.valueOf("0" + seconds));
+        else
+            timeViewModel.setSec(String.valueOf(seconds));
+        if (minutes < 10)
+            timeViewModel.setMin(String.valueOf("0" + minutes));
+        else
+            timeViewModel.setMin(String.valueOf(minutes));
+        if (hours < 10)
+            timeViewModel.setHour(String.valueOf("0" + hours));
+        else
+            timeViewModel.setHour(String.valueOf(hours));
+        if (hours==24)
+            timeViewModel.setHour("00");
+
+
+    }
+
+      public void timeShiftBackWardMin(View view) {
+
+        minutes = minutes - 1;
+            if (minutes < 0) {
+                minutes = 60 + minutes;
+                hours--;
+            }
+            if (minutes == 0) {
+                minutes = 59;
+                hours--;
+            }
+
+
+               if (minutes < 10)
+            timeViewModel.setMin(String.valueOf("0" + minutes));
+        else
+            timeViewModel.setMin(String.valueOf(minutes));
+        if (hours < 10)
+            timeViewModel.setHour(String.valueOf("0" + hours));
+        else
+            timeViewModel.setHour(String.valueOf(hours));
+        if (hours==24)
+            timeViewModel.setHour("00");
+
+
     }
 
     public class CallAPI extends AsyncTask<String, String, MutableLiveData<String>> {
@@ -788,5 +724,46 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             }
         }
     }
+
+    public class LiveAPi extends AsyncTask<Void, Void, MutableLiveData<String>> {
+
+        @Override
+        protected MutableLiveData<String> doInBackground(Void... voids) {
+            //String data = params[1]; //data to post
+            OutputStream out = null;
+            int count;
+
+            try {
+                //  URL url = new URL(urlString);
+                URL url = new URL("http://192.168.10.85:3030");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                InputStream input = new BufferedInputStream(url.openStream(), 8192);
+
+
+                OutputStream output = new FileOutputStream(fileToBeDecrypted);
+
+                byte data[] = new byte[1024];
+                long totlal = 0;
+
+                while ((count = input.read(data)) != -1) {
+                    totlal += count;
+
+                    output.write(data, 0, count);
+                }
+                out.flush();
+                input.close();
+                base_url.postValue(fileToBeDecrypted.getPath());
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                base_url.postValue(null);
+            }
+            return base_url;
+        }
+    }
+
 }
 

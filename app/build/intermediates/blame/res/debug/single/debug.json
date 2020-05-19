@@ -36,8 +36,16 @@
         "source": "C:\\Users\\Aida\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\layout\\abc_tooltip.xml"
     },
     {
+        "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_forward.png.flat",
+        "source": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\src\\main\\res\\drawable-mdpi\\forward.png"
+    },
+    {
         "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_ic_tv.png.flat",
         "source": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\generated\\res\\pngs\\debug\\drawable-xhdpi\\ic_tv.png"
+    },
+    {
+        "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_backward.png.flat",
+        "source": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\src\\main\\res\\drawable-mdpi\\backward.png"
     },
     {
         "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_ic_menu_share_mtrl_alpha.png.flat",
@@ -860,6 +868,10 @@
         "source": "C:\\Users\\Aida\\.gradle\\caches\\transforms-2\\files-2.1\\b2fdb91e5a141060c7ec3d56cd5ee3c5\\exoplayer-ui-2.10.8\\res\\drawable-ldpi-v4\\exo_icon_pause.png"
     },
     {
+        "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\layout_exo_controller.xml.flat",
+        "source": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\src\\main\\res\\layout\\exo_controller.xml"
+    },
+    {
         "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\color_abc_primary_text_material_light.xml.flat",
         "source": "C:\\Users\\Aida\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\color\\abc_primary_text_material_light.xml"
     },
@@ -1508,6 +1520,10 @@
         "source": "C:\\Users\\Aida\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable\\abc_item_background_holo_light.xml"
     },
     {
+        "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_play.png.flat",
+        "source": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\src\\main\\res\\drawable-mdpi\\play.png"
+    },
+    {
         "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_activity_chooser_view.xml.flat",
         "source": "C:\\Users\\Aida\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\layout\\abc_activity_chooser_view.xml"
     },
@@ -2132,6 +2148,10 @@
         "source": "C:\\Users\\Aida\\.gradle\\caches\\transforms-2\\files-2.1\\b2fdb91e5a141060c7ec3d56cd5ee3c5\\exoplayer-ui-2.10.8\\res\\drawable-xhdpi-v4\\exo_icon_vr.png"
     },
     {
+        "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\layout_controller.xml.flat",
+        "source": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\src\\main\\res\\layout\\controller.xml"
+    },
+    {
         "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_notification_bg_low_normal.9.png.flat",
         "source": "C:\\Users\\Aida\\.gradle\\caches\\transforms-2\\files-2.1\\e9dab9c67c1ee3668e0bbf86c6d8cbd8\\core-1.1.0\\res\\drawable-mdpi-v4\\notification_bg_low_normal.9.png"
     },
@@ -2512,10 +2532,6 @@
         "source": "C:\\Users\\Aida\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-xxhdpi-v4\\abc_list_selector_disabled_holo_light.9.png"
     },
     {
-        "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_encrypt.xml.flat",
-        "source": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\src\\main\\res\\layout\\activity_encrypt.xml"
-    },
-    {
         "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\drawable_notification_icon_background.xml.flat",
         "source": "C:\\Users\\Aida\\.gradle\\caches\\transforms-2\\files-2.1\\e9dab9c67c1ee3668e0bbf86c6d8cbd8\\core-1.1.0\\res\\drawable\\notification_icon_background.xml"
     },
@@ -2546,6 +2562,10 @@
     {
         "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\anim_design_bottom_sheet_slide_out.xml.flat",
         "source": "C:\\Users\\Aida\\.gradle\\caches\\transforms-2\\files-2.1\\c7eb9cd3508ac3959447c14fd76c9fb9\\material-1.0.0\\res\\anim\\design_bottom_sheet_slide_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_live.png.flat",
+        "source": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\src\\main\\res\\drawable-mdpi\\live.png"
     },
     {
         "merged": "C:\\Users\\Aida\\AndroidStudioProjects\\MyStreamer\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_text_select_handle_right_mtrl_light.png.flat",

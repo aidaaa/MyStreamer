@@ -6,6 +6,8 @@ import android.view.View;
 import androidx.databinding.DataBinderMapper;
 import androidx.databinding.DataBindingComponent;
 import androidx.databinding.ViewDataBinding;
+import com.example.mystreamer.databinding.ActivityMainBindingImpl;
+import java.lang.IllegalArgumentException;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
@@ -16,9 +18,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DataBinderMapperImpl extends DataBinderMapper {
-  private static final SparseIntArray INTERNAL_LAYOUT_ID_LOOKUP = new SparseIntArray(0);
+  private static final int LAYOUT_ACTIVITYMAIN = 1;
+
+  private static final SparseIntArray INTERNAL_LAYOUT_ID_LOOKUP = new SparseIntArray(1);
 
   static {
+    INTERNAL_LAYOUT_ID_LOOKUP.put(com.example.mystreamer.R.layout.activity_main, LAYOUT_ACTIVITYMAIN);
   }
 
   @Override
@@ -28,6 +33,14 @@ public class DataBinderMapperImpl extends DataBinderMapper {
       final Object tag = view.getTag();
       if(tag == null) {
         throw new RuntimeException("view must have a tag");
+      }
+      switch(localizedLayoutId) {
+        case  LAYOUT_ACTIVITYMAIN: {
+          if ("layout/activity_main_0".equals(tag)) {
+            return new ActivityMainBindingImpl(component, view);
+          }
+          throw new IllegalArgumentException("The tag for activity_main is invalid. Received: " + tag);
+        }
       }
     }
     return null;
@@ -73,17 +86,27 @@ public class DataBinderMapperImpl extends DataBinderMapper {
   }
 
   private static class InnerBrLookup {
-    static final SparseArray<String> sKeys = new SparseArray<String>(2);
+    static final SparseArray<String> sKeys = new SparseArray<String>(11);
 
     static {
       sKeys.put(0, "_all");
+      sKeys.put(1, "sec");
+      sKeys.put(2, "min");
+      sKeys.put(3, "dateVm");
+      sKeys.put(4, "activity");
+      sKeys.put(5, "month");
+      sKeys.put(6, "hour");
+      sKeys.put(7, "year");
+      sKeys.put(8, "timeVm");
+      sKeys.put(9, "day");
     }
   }
 
   private static class InnerLayoutIdLookup {
-    static final HashMap<String, Integer> sKeys = new HashMap<String, Integer>(0);
+    static final HashMap<String, Integer> sKeys = new HashMap<String, Integer>(1);
 
     static {
+      sKeys.put("layout/activity_main_0", com.example.mystreamer.R.layout.activity_main);
     }
   }
 }

@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+        
+    
+                 
+                         
+                                                                      
+                 
+                         
+                                                                      
+             
+                       
+                                                     
+           
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/layout"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity" android:tag="layout/activity_main_0">
 
 
 <com.google.android.exoplayer2.ui.PlayerView
@@ -39,7 +51,124 @@
     android:background="@android:color/transparent"
     android:visibility="invisible"/>
 
-    <Button
+    <LinearLayout
+        android:id="@+id/control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="0dp"
+        android:layout_weight="2"
+        android:visibility="invisible"
+        android:background="@android:color/darker_gray"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="6">
+
+            <Button
+                android:id="@+id/one_min_back_shift_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="1 min BackWard"
+                android:tag="binding_1"                                           />
+
+            <Button
+                android:id="@+id/ten_ses_back_shift_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:tag="binding_2"                                           
+                android:text="10 sec BackWard" />
+
+            <Button
+                android:id="@+id/live_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="liveClick"
+                android:text="live" />
+
+            <Button
+                android:id="@+id/play_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="play" />
+
+            <Button
+                android:id="@+id/ten_sec_next_shift_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:tag="binding_3"                                          
+                android:layout_weight="1"
+                android:text="10 sec forward" />
+
+            <Button
+                android:id="@+id/one_min_next_shift_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="1 min forward"
+                android:tag="binding_4"                                          />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2.75">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25" />
+
+            <EditText
+                android:id="@+id/edt_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:tag="binding_5"                                    
+                android:hint="HH:MM:SS"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@android:color/white" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25" />
+
+            <EditText
+                android:id="@+id/edt_date"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:tag="binding_6"                                      
+                android:hint="YYYY/MM/DD"
+                android:background="@android:color/white"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+ <!--  &lt;!&ndash; <Button
         android:id="@+id/Live"
         android:text="LIVE"
         android:layout_width="wrap_content"
@@ -47,7 +176,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
-        android:onClick="liveClick"/>
+        android:onClick="liveClick"/>&ndash;&gt;
 
     <Button
         android:id="@+id/time_shift"
@@ -90,18 +219,8 @@
         android:hint="HH:MM:SS"
         android:layout_toLeftOf="@id/editText"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"/>
-
-
- <!--   <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
-        android:background="@android:color/white"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="time"
-        android:inputType="time"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"/>-->
 
+
 </RelativeLayout>
+         
