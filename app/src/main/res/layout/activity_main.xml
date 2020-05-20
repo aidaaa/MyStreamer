@@ -99,7 +99,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="play" />
+                android:text="play"
+                android:onClick="@{(view) -> activity.playFile(view)}"/>
 
             <Button
                 android:id="@+id/ten_sec_next_shift_btn"

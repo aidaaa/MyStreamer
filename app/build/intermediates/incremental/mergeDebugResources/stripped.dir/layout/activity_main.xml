@@ -99,13 +99,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="play" />
+                android:text="play"
+                android:tag="binding_3"                               />
 
             <Button
                 android:id="@+id/ten_sec_next_shift_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:tag="binding_3"                                          
+                android:tag="binding_4"                                          
                 android:layout_weight="1"
                 android:text="10 sec forward" />
 
@@ -115,7 +116,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="1 min forward"
-                android:tag="binding_4"                                          />
+                android:tag="binding_5"                                          />
 
         </LinearLayout>
 
@@ -136,7 +137,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:tag="binding_5"                                    
+                android:tag="binding_6"                                    
                 android:hint="HH:MM:SS"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -152,7 +153,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:tag="binding_6"                                      
+                android:tag="binding_7"                                      
                 android:hint="YYYY/MM/DD"
                 android:background="@android:color/white"
                 android:layout_gravity="center"

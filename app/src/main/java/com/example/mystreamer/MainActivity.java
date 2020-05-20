@@ -7,13 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.format.Time;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -28,7 +26,6 @@ import com.example.mystreamer.dagger.app.App;
 import com.example.mystreamer.dataBinding.DateViewModel;
 import com.example.mystreamer.dataBinding.TimeViewModel;
 import com.example.mystreamer.databinding.ActivityMainBinding;
-import com.example.mystreamer.viewmodel.PlayerViewModel;
 import com.example.mystreamer.xml.Xml;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -42,16 +39,12 @@ import com.google.android.exoplayer2.upstream.DataSource;
 
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,7 +52,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -110,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     private int hours, minutes, seconds, yeaer, month, daay;
     DateViewModel dateViewModel = new DateViewModel();
     TimeViewModel timeViewModel = new TimeViewModel();
+    // private int hour,min,sec,day,mon,year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,8 +149,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
 
         dateViewModel.setYear(String.valueOf(yeaer));
-        dateViewModel.setMonth(String.valueOf(month));
-        dateViewModel.setDay(String.valueOf(daay));
+        // dateViewModel.setMonth(String.valueOf(month));
+        // dateViewModel.setDay(String.valueOf(daay));
 
         mainBinding.setDateVm(dateViewModel);
         mainBinding.setTimeVm(timeViewModel);
@@ -171,6 +164,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         pw = mainBinding.pW1;
         prg_bar = mainBinding.prgBar;
         prg_bar.setVisibility(View.VISIBLE);
+        edt_time = mainBinding.edtTime;
+        edt_date = mainBinding.edtDate;
 
         base_url = new MutableLiveData<>();
 
@@ -252,6 +247,134 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             }
         });
 
+        edt_time.addTextChangedListener(new TextWatcher() {
+
+            private String current = "";
+            private String ddmmyyyy = "HHMMSS";
+            private Calendar cal = Calendar.getInstance();
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().equals(current)) {
+                    String clean = s.toString().replaceAll("[^\\d.]", "");
+                    String cleanC = current.replaceAll("[^\\d.]", "");
+
+                    int cl = clean.length();
+                    int sel = cl;
+                    for (int i = 2; i <= cl && i < 6; i += 2) {
+                        sel++;
+                    }
+                    //Fix for pressing delete next to a forward slash
+                    if (clean.equals(cleanC)) sel--;
+
+                    if (clean.length() < 6) {
+                        clean = clean + ddmmyyyy.substring(clean.length());
+                    } else {
+                        //This part makes sure that when we finish entering numbers
+                        //the date is correct, fixing it otherwise
+                        hours = Integer.parseInt(clean.substring(0, 2));
+                        minutes = Integer.parseInt(clean.substring(2, 4));
+                        seconds = Integer.parseInt(clean.substring(4, 6));
+
+                        if (hours > 23) hours = 00;
+                        //cal.set(Calendar.MONTH, hour - 1);
+                        if (minutes > 59) minutes = 00;
+                        if (seconds > 59) seconds = 00;
+                        // cal.set(Calendar.YEAR, year);
+                        // ^ first set year for the line below to work correctly
+                        //with leap years - otherwise, date e.g. 29/02/2012
+                        //would be automatically corrected to 28/02/2012
+
+                        //  day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum(Calendar.DATE) : day;
+                        clean = String.format("%02d%02d%02d", hours, minutes, seconds);
+                    }
+
+                    clean = String.format("%s:%s:%s", clean.substring(0, 2),
+                            clean.substring(2, 4),
+                            clean.substring(4, 6));
+
+                    sel = sel < 0 ? 0 : sel;
+                    current = clean;
+                    edt_time.setText(current);
+                    edt_time.setSelection(sel < current.length() ? sel : current.length());
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+        });
+
+        edt_date.addTextChangedListener(new TextWatcher() {
+
+            private String current = "";
+            private String yyyymmdd = "YYYYMMDD";
+            private Calendar cal = Calendar.getInstance();
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().equals(current)) {
+                    String clean = s.toString().replaceAll("[^\\d.]", "");
+                    String cleanC = current.replaceAll("[^\\d.]", "");
+
+                    int cl = clean.length();
+                    int sel = cl;
+                    for (int i = 2; i <= cl && i < 6; i += 2) {
+                        sel++;
+                    }
+                    //Fix for pressing delete next to a forward slash
+                    if (clean.equals(cleanC)) sel--;
+
+                    if (clean.length() < 8) {
+                        clean = clean + yyyymmdd.substring(clean.length());
+                    } else {
+                        //This part makes sure that when we finish entering numbers
+                        //the date is correct, fixing it otherwise
+                        yeaer = Integer.parseInt(clean.substring(0, 4));
+                        month = Integer.parseInt(clean.substring(4, 6));
+                        daay = Integer.parseInt(clean.substring(6, 8));
+
+                        if (month > 12) month = 12;
+                        cal.set(Calendar.MONTH, month - 1);
+                        yeaer = (yeaer < 1900) ? 1900 : (yeaer > 2100) ? 2100 : yeaer;
+                        cal.set(Calendar.YEAR, yeaer);
+                        // ^ first set year for the line below to work correctly
+                        //with leap years - otherwise, date e.g. 29/02/2012
+                        //would be automatically corrected to 28/02/2012
+
+                        daay = (daay > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum(Calendar.DATE) : daay;
+                        clean = String.format("%02d%02d%02d", yeaer, month, daay);
+                    }
+
+                    clean = String.format("%s/%s/%s", clean.substring(0, 4),
+                            clean.substring(4, 6),
+                            clean.substring(6, 8));
+
+                    sel = sel < 0 ? 0 : sel;
+                    current = clean;
+                    edt_date.setText(current);
+                    edt_date.setSelection(sel < current.length() ? sel : current.length());
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                System.out.println(s);
+                String a = dateViewModel.getDay();
+                System.out.println(a);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+        });
     }
 
     @Override
@@ -567,11 +690,32 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
                 minutes = minutes % 60;
                 hours++;
             }
-        }
-        if (hours==24)
-        {
-            daay++;
-            hours=0;
+
+            if (hours == 24) {
+                daay++;
+                hours = 0;
+            }
+
+            if (month <= 6) {
+                if (daay == 31) {
+                    month++;
+                    daay = 1;
+                }
+            }
+            if (month > 6 && month < 12) {
+                if (daay == 30) {
+                    month++;
+                    daay = 1;
+                }
+            }
+
+            if (month == 12) {
+                if (daay > 29) {
+                    yeaer++;
+                    daay = 1;
+                    month = 1;
+                }
+            }
         }
 
         if (seconds < 10)
@@ -586,11 +730,15 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             timeViewModel.setHour("0" + hours);
         else
             timeViewModel.setHour(String.valueOf(hours));
-        if (daay<10)
-            dateViewModel.setDay("0"+daay);
+        if (daay < 10)
+            dateViewModel.setDay("0" + daay);
         else
             dateViewModel.setDay(String.valueOf(daay));
-
+        if (month < 10)
+            dateViewModel.setMonth("0" + month);
+        else
+            dateViewModel.setMonth(String.valueOf(month));
+        dateViewModel.setYear(String.valueOf(yeaer));
 
     }
 
@@ -598,32 +746,63 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
         minutes = 1 + minutes;
         if (minutes > 59) {
-            minutes = 60-minutes;
+            minutes = 60 - minutes;
             hours++;
-        }
-        if (hours==24)
-        {
-            daay++;
-            hours=0;
-        }
 
+            if (hours == 24) {
+                daay++;
+                hours = 0;
+            }
+
+            if (month <= 6) {
+                if (daay == 31) {
+                    month++;
+                    daay = 1;
+                }
+            }
+            if (month > 6 && month < 12) {
+                if (daay == 30) {
+                    month++;
+                    daay = 1;
+                }
+            }
+
+            if (month == 12) {
+                if (daay > 29) {
+                    yeaer++;
+                    daay = 1;
+                    month = 1;
+                }
+            }
+        }
 
         if (minutes < 10)
             timeViewModel.setMin(String.valueOf("0" + minutes));
         else
             timeViewModel.setMin(String.valueOf(minutes));
+
         if (hours < 10)
             timeViewModel.setHour(String.valueOf("0" + hours));
         else
             timeViewModel.setHour(String.valueOf(hours));
 
+        if (daay < 10)
+            dateViewModel.setDay("0" + daay);
+        else
+            dateViewModel.setDay(String.valueOf(daay));
+
+        if (month < 10)
+            dateViewModel.setMonth("0" + month);
+        else
+            dateViewModel.setMonth(String.valueOf(month));
+        dateViewModel.setYear(String.valueOf(yeaer));
 
     }
 
     public void timeShiftBackWardSec(View view) {
 
         seconds = seconds - 10;
-        if (seconds < 0) {
+        if (seconds <= 0) {
             seconds = 60 + seconds;
             minutes--;
 
@@ -631,13 +810,43 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
                 seconds = 59;
                 minutes--;
             }
+
             if (minutes < 0) {
                 minutes = 60 + minutes;
+                if (hours == 0) {
+                    hours = 24;
+                }
                 hours--;
             }
+
             if (minutes == 0) {
                 minutes = 59;
+                if (hours == 0) {
+                    hours = 24;
+                }
                 hours--;
+            }
+
+
+            if (month <= 6 && month > 1) {
+                if (daay == 0) {
+                    month--;
+                    daay = 31;
+                }
+            }
+            if (month > 6 && month <= 12) {
+                if (daay == 0) {
+                    month--;
+                    daay = 30;
+                }
+            }
+
+            if (month == 1) {
+                if (daay > 0) {
+                    daay = 29;
+                    month = 12;
+                    yeaer--;
+                }
             }
         }
 
@@ -653,26 +862,65 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             timeViewModel.setHour(String.valueOf("0" + hours));
         else
             timeViewModel.setHour(String.valueOf(hours));
-        if (hours==24)
+        if (hours == 24) {
             timeViewModel.setHour("00");
+            hours = 24;
+        }
 
+        if (daay < 10)
+            dateViewModel.setDay("0" + daay);
+        else
+            dateViewModel.setDay(String.valueOf(daay));
+
+        if (month < 10)
+            dateViewModel.setMonth("0" + month);
+        else
+            dateViewModel.setMonth(String.valueOf(month));
+        dateViewModel.setYear(String.valueOf(yeaer));
 
     }
 
-      public void timeShiftBackWardMin(View view) {
+    public void timeShiftBackWardMin(View view) {
 
         minutes = minutes - 1;
-            if (minutes < 0) {
-                minutes = 60 + minutes;
-                hours--;
+        if (minutes <= 0) {
+            minutes = 60 + minutes;
+            if (hours == 0) {
+                hours = 24;
             }
+            hours--;
+
             if (minutes == 0) {
                 minutes = 59;
+                if (hours == 0) {
+                    hours = 24;
+                }
                 hours--;
             }
 
+            if (month <= 6 && month > 1) {
+                if (daay == 0) {
+                    month--;
+                    daay = 31;
+                }
+            }
+            if (month > 6 && month <= 12) {
+                if (daay == 0) {
+                    month--;
+                    daay = 30;
+                }
+            }
 
-               if (minutes < 10)
+            if (month == 1) {
+                if (daay > 0) {
+                    daay = 29;
+                    month = 12;
+                    yeaer--;
+                }
+            }
+        }
+
+        if (minutes < 10)
             timeViewModel.setMin(String.valueOf("0" + minutes));
         else
             timeViewModel.setMin(String.valueOf(minutes));
@@ -680,8 +928,50 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             timeViewModel.setHour(String.valueOf("0" + hours));
         else
             timeViewModel.setHour(String.valueOf(hours));
-        if (hours==24)
+        if (hours == 24 ) {
             timeViewModel.setHour("00");
+        }
+        if (daay < 10)
+            dateViewModel.setDay("0" + daay);
+        else
+            dateViewModel.setDay(String.valueOf(daay));
+
+        if (month < 10)
+            dateViewModel.setMonth("0" + month);
+        else
+            dateViewModel.setMonth(String.valueOf(month));
+        dateViewModel.setYear(String.valueOf(yeaer));
+
+    }
+
+    public void playFile(View view)
+    {
+        StringBuilder url = new StringBuilder().append("http://192.168.10.85:3030/");
+        StringBuilder time = new StringBuilder();
+        StringBuilder date=new StringBuilder();
+
+
+        time.append(dateViewModel.getYear())
+                .append("_")
+                .append(dateViewModel.getMonth())
+                .append("_")
+                .append(dateViewModel.getDay())
+                .append("-")
+                .append(timeViewModel.getHour())
+                .append(":")
+                .append(timeViewModel.getMin())
+                .append(":")
+                .append(timeViewModel.getSec());
+
+        url.append(time);
+        if (!checkDate(time.toString()))
+        {
+            Toast.makeText(this, "تاریخ خارج از محدوده", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            CallAPI callAPI = new CallAPI();
+            callAPI.execute(url.toString());
+        }
 
 
     }
@@ -764,6 +1054,5 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             return base_url;
         }
     }
-
 }
 

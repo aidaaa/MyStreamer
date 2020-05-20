@@ -14,13 +14,12 @@ public class ActivityMainBindingImpl extends ActivityMainBinding implements com.
     static {
         sIncludes = null;
         sViewsWithIds = new android.util.SparseIntArray();
-        sViewsWithIds.put(R.id.pW1, 7);
-        sViewsWithIds.put(R.id.txt, 8);
-        sViewsWithIds.put(R.id.prg_bar, 9);
-        sViewsWithIds.put(R.id.rv, 10);
-        sViewsWithIds.put(R.id.control, 11);
-        sViewsWithIds.put(R.id.live_btn, 12);
-        sViewsWithIds.put(R.id.play_btn, 13);
+        sViewsWithIds.put(R.id.pW1, 8);
+        sViewsWithIds.put(R.id.txt, 9);
+        sViewsWithIds.put(R.id.prg_bar, 10);
+        sViewsWithIds.put(R.id.rv, 11);
+        sViewsWithIds.put(R.id.control, 12);
+        sViewsWithIds.put(R.id.live_btn, 13);
     }
     // views
     // variables
@@ -28,6 +27,8 @@ public class ActivityMainBindingImpl extends ActivityMainBinding implements com.
     private final android.view.View.OnClickListener mCallback4;
     @Nullable
     private final android.view.View.OnClickListener mCallback2;
+    @Nullable
+    private final android.view.View.OnClickListener mCallback5;
     @Nullable
     private final android.view.View.OnClickListener mCallback3;
     @Nullable
@@ -41,32 +42,34 @@ public class ActivityMainBindingImpl extends ActivityMainBinding implements com.
     }
     private ActivityMainBindingImpl(androidx.databinding.DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 2
-            , (android.widget.LinearLayout) bindings[11]
+            , (android.widget.LinearLayout) bindings[12]
+            , (android.widget.EditText) bindings[7]
             , (android.widget.EditText) bindings[6]
-            , (android.widget.EditText) bindings[5]
             , (android.widget.RelativeLayout) bindings[0]
-            , (android.widget.Button) bindings[12]
-            , (android.widget.Button) bindings[1]
-            , (android.widget.Button) bindings[4]
-            , (com.google.android.exoplayer2.ui.PlayerView) bindings[7]
             , (android.widget.Button) bindings[13]
-            , (android.widget.ProgressBar) bindings[9]
-            , (androidx.recyclerview.widget.RecyclerView) bindings[10]
+            , (android.widget.Button) bindings[1]
+            , (android.widget.Button) bindings[5]
+            , (com.google.android.exoplayer2.ui.PlayerView) bindings[8]
             , (android.widget.Button) bindings[3]
+            , (android.widget.ProgressBar) bindings[10]
+            , (androidx.recyclerview.widget.RecyclerView) bindings[11]
+            , (android.widget.Button) bindings[4]
             , (android.widget.Button) bindings[2]
-            , (android.widget.TextView) bindings[8]
+            , (android.widget.TextView) bindings[9]
             );
         this.edtDate.setTag(null);
         this.edtTime.setTag(null);
         this.layout.setTag(null);
         this.oneMinBackShiftBtn.setTag(null);
         this.oneMinNextShiftBtn.setTag(null);
+        this.playBtn.setTag(null);
         this.tenSecNextShiftBtn.setTag(null);
         this.tenSesBackShiftBtn.setTag(null);
         setRootTag(root);
         // listeners
         mCallback4 = new com.example.mystreamer.generated.callback.OnClickListener(this, 4);
         mCallback2 = new com.example.mystreamer.generated.callback.OnClickListener(this, 2);
+        mCallback5 = new com.example.mystreamer.generated.callback.OnClickListener(this, 5);
         mCallback3 = new com.example.mystreamer.generated.callback.OnClickListener(this, 3);
         mCallback1 = new com.example.mystreamer.generated.callback.OnClickListener(this, 1);
         invalidateAll();
@@ -298,8 +301,9 @@ public class ActivityMainBindingImpl extends ActivityMainBinding implements com.
             // api target 1
 
             this.oneMinBackShiftBtn.setOnClickListener(mCallback1);
-            this.oneMinNextShiftBtn.setOnClickListener(mCallback4);
-            this.tenSecNextShiftBtn.setOnClickListener(mCallback3);
+            this.oneMinNextShiftBtn.setOnClickListener(mCallback5);
+            this.playBtn.setOnClickListener(mCallback3);
+            this.tenSecNextShiftBtn.setOnClickListener(mCallback4);
             this.tenSesBackShiftBtn.setOnClickListener(mCallback2);
         }
     }
@@ -321,7 +325,7 @@ public class ActivityMainBindingImpl extends ActivityMainBinding implements com.
 
 
 
-                    activity.timeShiftForWardMin(callbackArg_0);
+                    activity.timeShiftForWardSec(callbackArg_0);
                 }
                 break;
             }
@@ -343,6 +347,24 @@ public class ActivityMainBindingImpl extends ActivityMainBinding implements com.
                 }
                 break;
             }
+            case 5: {
+                // localize variables for thread safety
+                // activity != null
+                boolean activityJavaLangObjectNull = false;
+                // activity
+                com.example.mystreamer.MainActivity activity = mActivity;
+
+
+
+                activityJavaLangObjectNull = (activity) != (null);
+                if (activityJavaLangObjectNull) {
+
+
+
+                    activity.timeShiftForWardMin(callbackArg_0);
+                }
+                break;
+            }
             case 3: {
                 // localize variables for thread safety
                 // activity != null
@@ -357,7 +379,7 @@ public class ActivityMainBindingImpl extends ActivityMainBinding implements com.
 
 
 
-                    activity.timeShiftForWardSec(callbackArg_0);
+                    activity.playFile(callbackArg_0);
                 }
                 break;
             }
