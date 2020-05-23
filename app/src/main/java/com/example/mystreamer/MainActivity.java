@@ -26,6 +26,7 @@ import com.example.mystreamer.dagger.app.App;
 import com.example.mystreamer.dataBinding.DateViewModel;
 import com.example.mystreamer.dataBinding.TimeViewModel;
 import com.example.mystreamer.databinding.ActivityMainBinding;
+import com.example.mystreamer.encrypteplayer.MyAesCipherDataSource;
 import com.example.mystreamer.xml.Xml;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -36,13 +37,10 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.exoplayer2.util.Util;
 
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
@@ -51,7 +49,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -59,7 +56,6 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements Observer<List<ArrayList<String>>>, ShowChannelAdapter.OnItemClickListener {
@@ -83,11 +79,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     int textSize;
     ArrayList<Integer> textSizeList = new ArrayList<>();
     boolean error = false;
-    DisposableObserver<Long> observer;
 
     MutableLiveData<String> base_url;
-
-    boolean isLive = false;
 
     SimpleExoPlayer simpleExoPlayer;
     @Inject
@@ -96,13 +89,10 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     DataSource.Factory daFactory;
 
     EditText edt_date, edt_time;
-    // int day, mon, year, hour, min, sec;
 
-    File fileToBeDecrypted;
     private int hours, minutes, seconds, yeaer, month, daay;
     DateViewModel dateViewModel = new DateViewModel();
     TimeViewModel timeViewModel = new TimeViewModel();
-    // private int hour,min,sec,day,mon,year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,15 +137,10 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         else
             dateViewModel.setMonth(String.valueOf(month));
 
-
         dateViewModel.setYear(String.valueOf(yeaer));
-        // dateViewModel.setMonth(String.valueOf(month));
-        // dateViewModel.setDay(String.valueOf(daay));
 
         mainBinding.setDateVm(dateViewModel);
         mainBinding.setTimeVm(timeViewModel);
-
-        fileToBeDecrypted = new File(this.getExternalFilesDir(null), "down.mp4");
 
         layout = mainBinding.layout;
         control = mainBinding.control;
@@ -231,19 +216,14 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             }
         });
 
-        //setUpViewUrl("http://192.168.10.85:3030");
 
         base_url.observe(this, new androidx.lifecycle.Observer<String>() {
             @Override
             public void onChanged(String s) {
-                //   if (isLive)
+                if (s==null)
+                    Toast.makeText(MainActivity.this, "در پخش مشکلی پیش آمده مجدد تلاش کنید", Toast.LENGTH_SHORT).show();
+                else
                 setUpViewUrl(s);
-                //  else
-                //  getObservable(s);
-                /*observer = Observable.just(1).timer(5000, TimeUnit.MILLISECONDS)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(getObserver());*/
             }
         });
 
@@ -306,9 +286,10 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s)
+            {
+               // timeViewModel.setHour(String.valueOf(hours));
             }
-
         });
 
         edt_date.addTextChangedListener(new TextWatcher() {
@@ -533,14 +514,22 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             simpleExoPlayer.release();
             simpleExoPlayer = null;
         }
-        simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
-        pw.setPlayer(simpleExoPlayer);
-        // DataSource.Factory daFactory=new DefaultDataSourceFactory(this, Util.getUserAgent(this,"EXOPlayer"));
+        simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this);
+
+        DataSource.Factory factory=new DataSource.Factory() {
+            @Override
+            public DataSource createDataSource() {
+                MyAesCipherDataSource dataSource=new MyAesCipherDataSource(new DefaultHttpDataSource(Util.getUserAgent(MainActivity.this, "exoplayer"),null));
+                return dataSource;
+            }
+        };
 
         Uri audioUri = Uri.parse(url);
 
-        MediaSource mediaSource = new ProgressiveMediaSource.Factory(daFactory).createMediaSource(audioUri);
+        ProgressiveMediaSource.Factory pgMedia=new ProgressiveMediaSource.Factory(factory);
+        MediaSource mediaSource=pgMedia.createMediaSource(audioUri);
 
+        pw.setPlayer(simpleExoPlayer);
         simpleExoPlayer.prepare(mediaSource);
         simpleExoPlayer.setPlayWhenReady(true);
 
@@ -561,16 +550,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     }
 
     public void liveClick(View view) {
-        LiveAPi callAPI = new LiveAPi();
-        isLive = true;
-        try {
-            base_url = callAPI.execute().get();
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        StreamAPI streamAPI = new StreamAPI();
+        streamAPI.execute("http://192.168.10.85:3030");
 
        /*PlayerViewModel playerViewModel=new PlayerViewModel(getApplication(),"http://192.168.10.85:3030");
          playerViewModel.playLive();*/
@@ -598,87 +579,6 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             return false;
         }
     }
-
-
-
-   /* public void timeSelect(View view) {
-
-        isLive = false;
-
-        if (observer != null) {
-            if (!observer.isDisposed())
-                observer.dispose();
-        }
-
-        CallAPI callAPI = new CallAPI();
-        try {
-            StringBuilder url = new StringBuilder().append("http://192.168.10.85:3030/");
-            StringBuilder time = new StringBuilder();
-            time.append(year)
-                    .append("_");
-
-            if (mon < 10) {
-                time.append("0")
-                        .append(mon)
-                        .append("_");
-            } else {
-                time.append(mon)
-                        .append("_");
-            }
-
-            if (day < 10) {
-                time.append("0")
-                        .append(day)
-                        .append("-");
-            } else {
-                time.append(day)
-                        .append("-");
-            }
-
-              *//*  time.append("13")
-                        .append(":")
-                        .append(min)
-                        .append(":")
-                        .append("00");*//*
-
-            if (hour < 10) {
-                time.append("0")
-                        .append(hour)
-                        .append(":");
-            } else {
-                time.append(hour)
-                        .append(":");
-            }
-            if (min < 10) {
-                time.append("0")
-                        .append(min)
-                        .append(":");
-            } else {
-                time.append(min)
-                        .append(":");
-            }
-            if (sec < 10) {
-                time.append("0")
-                        .append(sec);
-            } else {
-                time.append(sec);
-            }
-
-
-            url.append(time);
-
-            if (checkDate(time.toString())) {
-                base_url = callAPI.execute(url.toString()).get();
-            }
-             *//*else {
-                base_url = callAPI.execute("http://192.168.10.85:3030/2020_05_09-09:00:00").get();
-            }*//*
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     public void timeShiftForWardSec(View view) {
 
@@ -745,7 +645,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     public void timeShiftForWardMin(View view) {
 
         minutes = 1 + minutes;
-        if (minutes > 59) {
+        if (minutes >= 60) {
             minutes = 60 - minutes;
             hours++;
 
@@ -803,11 +703,12 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
         seconds = seconds - 10;
         if (seconds <= 0) {
-            seconds = 60 + seconds;
-            minutes--;
-
             if (seconds == 0) {
                 seconds = 59;
+                minutes--;
+            }
+            if (seconds<0) {
+                seconds = 60 + seconds;
                 minutes--;
             }
 
@@ -819,33 +720,36 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
                 hours--;
             }
 
-            if (minutes == 0) {
+         /*   if (minutes == 0) {
                 minutes = 59;
                 if (hours == 0) {
                     hours = 24;
                 }
                 hours--;
-            }
+            }*/
 
 
-            if (month <= 6 && month > 1) {
-                if (daay == 0) {
-                    month--;
-                    daay = 31;
+            if (hours == 23 && minutes == 59) {
+                daay--;
+                if (month <= 6 && month > 1) {
+                    if (daay == 0) {
+                        month--;
+                        daay = 31;
+                    }
                 }
-            }
-            if (month > 6 && month <= 12) {
-                if (daay == 0) {
-                    month--;
-                    daay = 30;
+                if (month > 6 && month <= 12) {
+                    if (daay == 0) {
+                        month--;
+                        daay = 30;
+                    }
                 }
-            }
 
-            if (month == 1) {
-                if (daay > 0) {
-                    daay = 29;
-                    month = 12;
-                    yeaer--;
+                if (month == 1) {
+                    if (daay == 0) {
+                        daay = 29;
+                        month = 12;
+                        yeaer--;
+                    }
                 }
             }
         }
@@ -883,41 +787,39 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     public void timeShiftBackWardMin(View view) {
 
         minutes = minutes - 1;
-        if (minutes <= 0) {
-            minutes = 60 + minutes;
+        if (minutes < 0) {
+           minutes = 60 + minutes;
+            //minutes=59;
             if (hours == 0) {
                 hours = 24;
             }
             hours--;
 
-            if (minutes == 0) {
-                minutes = 59;
-                if (hours == 0) {
-                    hours = 24;
+            if (hours==23 && minutes==59) {
+                daay--;
+
+                if (month <= 6 && month > 1) {
+                    if (daay == 0) {
+                        month--;
+                        daay = 31;
+                    }
                 }
-                hours--;
+                if (month > 6 && month <= 12) {
+                    if (daay == 0) {
+                        month--;
+                        daay = 30;
+                    }
+                }
+
+                if (month == 1) {
+                    if (daay == 0) {
+                        daay = 29;
+                        month = 12;
+                        yeaer--;
+                    }
+                }
             }
 
-            if (month <= 6 && month > 1) {
-                if (daay == 0) {
-                    month--;
-                    daay = 31;
-                }
-            }
-            if (month > 6 && month <= 12) {
-                if (daay == 0) {
-                    month--;
-                    daay = 30;
-                }
-            }
-
-            if (month == 1) {
-                if (daay > 0) {
-                    daay = 29;
-                    month = 12;
-                    yeaer--;
-                }
-            }
         }
 
         if (minutes < 10)
@@ -944,14 +846,14 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
     }
 
-    public void playFile(View view)
-    {
+    public void playFile(View view) {
+        String date=edt_date.getText().toString();
+        String time=edt_time.getText().toString();
+        date=date.replaceAll("/","_");
         StringBuilder url = new StringBuilder().append("http://192.168.10.85:3030/");
-        StringBuilder time = new StringBuilder();
-        StringBuilder date=new StringBuilder();
+        StringBuilder change_url = new StringBuilder();
 
-
-        time.append(dateViewModel.getYear())
+   /*     change_url.append(dateViewModel.getYear())
                 .append("_")
                 .append(dateViewModel.getMonth())
                 .append("_")
@@ -961,24 +863,25 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
                 .append(":")
                 .append(timeViewModel.getMin())
                 .append(":")
-                .append(timeViewModel.getSec());
+                .append(timeViewModel.getSec());*/
+        change_url.append(date)
+                .append("-")
+                .append(time);
 
-        url.append(time);
-        if (!checkDate(time.toString()))
+        url.append(change_url);
+        if (!checkDate(change_url.toString()))
         {
             Toast.makeText(this, "تاریخ خارج از محدوده", Toast.LENGTH_SHORT).show();
         }
         else {
-            CallAPI callAPI = new CallAPI();
-            callAPI.execute(url.toString());
+            StreamAPI streamAPI = new StreamAPI();
+            streamAPI.execute(url.toString());
         }
-
-
     }
 
-    public class CallAPI extends AsyncTask<String, String, MutableLiveData<String>> {
+    public class StreamAPI extends AsyncTask<String, String, MutableLiveData<String>> {
 
-        public CallAPI() {
+        public StreamAPI() {
             //set context variables if required
         }
 
@@ -990,8 +893,6 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         @Override
         protected MutableLiveData<String> doInBackground(String... params) {
             String urlString = params[0]; // URL to call
-            //String data = params[1]; //data to post
-            OutputStream out = null;
 
             try {
                 URL url = new URL(urlString);
@@ -1010,7 +911,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
                 return base_url;
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                return null;
+                base_url.postValue(null);
+                return base_url;
             }
         }
     }
@@ -1019,33 +921,14 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
         @Override
         protected MutableLiveData<String> doInBackground(Void... voids) {
-            //String data = params[1]; //data to post
-            OutputStream out = null;
-            int count;
 
             try {
-                //  URL url = new URL(urlString);
                 URL url = new URL("http://192.168.10.85:3030");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
 
-                InputStream input = new BufferedInputStream(url.openStream(), 8192);
-
-
-                OutputStream output = new FileOutputStream(fileToBeDecrypted);
-
-                byte data[] = new byte[1024];
-                long totlal = 0;
-
-                while ((count = input.read(data)) != -1) {
-                    totlal += count;
-
-                    output.write(data, 0, count);
-                }
-                out.flush();
-                input.close();
-                base_url.postValue(fileToBeDecrypted.getPath());
+                base_url.postValue("http://192.168.10.85:3030");
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
