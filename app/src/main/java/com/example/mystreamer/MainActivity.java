@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         yeaer = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         daay = calendar.get(Calendar.DAY_OF_MONTH);
+
 
         if (seconds < 10)
             timeViewModel.setSec(String.valueOf("0" + seconds));
@@ -551,7 +553,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
     public void liveClick(View view) {
         StreamAPI streamAPI = new StreamAPI();
-        streamAPI.execute("http://192.168.10.85:3030");
+        streamAPI.execute("http://192.168.10.40:1010");
 
        /*PlayerViewModel playerViewModel=new PlayerViewModel(getApplication(),"http://192.168.10.85:3030");
          playerViewModel.playLive();*/
@@ -850,7 +852,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         String date=edt_date.getText().toString();
         String time=edt_time.getText().toString();
         date=date.replaceAll("/","_");
-        StringBuilder url = new StringBuilder().append("http://192.168.10.85:3030/");
+        StringBuilder url = new StringBuilder().append("http://192.168.10.40:1010/");
         StringBuilder change_url = new StringBuilder();
 
    /*     change_url.append(dateViewModel.getYear())
@@ -937,5 +939,6 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             return base_url;
         }
     }
+
 }
 

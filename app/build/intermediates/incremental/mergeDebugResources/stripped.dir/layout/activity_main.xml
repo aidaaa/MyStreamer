@@ -54,30 +54,42 @@
     <LinearLayout
         android:id="@+id/control"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:padding="10dp"
-        android:layout_marginBottom="0dp"
-        android:layout_weight="2"
+        android:padding="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="3"
         android:visibility="invisible"
-        android:background="@android:color/darker_gray"
+        android:background="@drawable/back"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="1.25"
             android:orientation="horizontal"
-            android:weightSum="6">
+            android:weightSum="7.75">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25" />
 
             <Button
                 android:id="@+id/one_min_back_shift_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="1 min BackWard"
+                android:background="@drawable/min_backward"
                 android:tag="binding_1"                                           />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25" />
 
             <Button
                 android:id="@+id/ten_ses_back_shift_btn"
@@ -85,7 +97,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:tag="binding_2"                                           
-                android:text="10 sec BackWard" />
+                android:background="@drawable/sec_backward" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25" />
 
             <Button
                 android:id="@+id/live_btn"
@@ -93,15 +110,25 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="liveClick"
-                android:text="live" />
+                android:background="@drawable/live"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25" />
 
             <Button
                 android:id="@+id/play_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="play"
+               android:background="@drawable/play"
                 android:tag="binding_3"                               />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25" />
 
             <Button
                 android:id="@+id/ten_sec_next_shift_btn"
@@ -109,56 +136,99 @@
                 android:layout_height="match_parent"
                 android:tag="binding_4"                                          
                 android:layout_weight="1"
-                android:text="10 sec forward" />
+               android:background="@drawable/sec_forward" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25" />
 
             <Button
                 android:id="@+id/one_min_next_shift_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="1 min forward"
+                android:background="@drawable/min_forward"
                 android:tag="binding_5"                                          />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2.75">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.25" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.25"
+            android:orientation="horizontal"
+            android:weightSum="5.25">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:src="@drawable/left_bracket"/>
 
             <EditText
                 android:id="@+id/edt_time"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="1.25"
                 android:tag="binding_6"                                    
+                android:textSize="18sp"
+                android:textStyle="italic"
                 android:hint="HH:MM:SS"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:background="@android:color/white" />
+                android:background="@android:color/transparent" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:src="@drawable/right_bracket"/>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.25" />
 
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:src="@drawable/left_bracket"/>
+
             <EditText
                 android:id="@+id/edt_date"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="1.25"
                 android:tag="binding_7"                                      
                 android:hint="YYYY/MM/DD"
-                android:background="@android:color/white"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                android:background="@android:color/transparent"
                 android:layout_gravity="center"
                 android:gravity="center"/>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:src="@drawable/right_bracket"/>
 
             <LinearLayout
                 android:layout_width="0dp"

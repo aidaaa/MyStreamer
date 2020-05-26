@@ -1111,7 +1111,7 @@ drawable abc_textfield_search_material
 drawable abc_vector_test
 drawable avd_hide_password
 drawable avd_show_password
-drawable backward
+drawable back
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -1156,7 +1156,6 @@ drawable exo_notification_previous
 drawable exo_notification_rewind
 drawable exo_notification_small_icon
 drawable exo_notification_stop
-drawable forward
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_menu_camera
@@ -1169,8 +1168,10 @@ drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_tv
+drawable left_bracket
 drawable live
-drawable logo
+drawable min_backward
+drawable min_forward
 drawable mtrl_snackbar_background
 drawable mtrl_tabs_default_indicator
 drawable navigation_empty_icon
@@ -1187,6 +1188,9 @@ drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable play
+drawable right_bracket
+drawable sec_backward
+drawable sec_forward
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
 id ALT
