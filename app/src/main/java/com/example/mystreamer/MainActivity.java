@@ -39,6 +39,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 
 
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         yeaer = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         daay = calendar.get(Calendar.DAY_OF_MONTH);
+        month++;
 
 
         if (seconds < 10)
@@ -160,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         prefs = getSharedPreferences("lastCh", MODE_PRIVATE);
         pos = prefs.getInt("pos", 0);
 
-        Observable<List<ArrayList<String>>> observable = xml.getObservableXml("5.160.10.54:8090");
+        Observable<List<ArrayList<String>>> observable = xml.getObservableXml("192.168.10.85:8020");
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this);
@@ -194,6 +196,31 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             @Override
             public void onClick() {
                 super.onClick();
+             /*   if (chList) {
+                    if (recyclerView.getVisibility() == View.INVISIBLE) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        showRv = true;
+                    } else if (recyclerView.getVisibility() == View.VISIBLE) {
+                        recyclerView.setVisibility(View.INVISIBLE);
+                        showRv = false;
+                    }
+                }*/
+            }
+
+            //hide channel list
+            @Override
+            public void onDoubleClick() {
+                super.onDoubleClick();
+                if (control.getVisibility() == View.INVISIBLE) {
+                    control.setVisibility(View.VISIBLE);
+                } else if (control.getVisibility() == View.VISIBLE) {
+                    control.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onLongClick() {
+                super.onLongClick();
                 if (chList) {
                     if (recyclerView.getVisibility() == View.INVISIBLE) {
                         recyclerView.setVisibility(View.VISIBLE);
@@ -202,18 +229,6 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
                         recyclerView.setVisibility(View.INVISIBLE);
                         showRv = false;
                     }
-                }
-            }
-
-            //hide channel list
-            @Override
-            public void onDoubleClick() {
-                super.onDoubleClick();
-                //TODO --->for archive
-                if (control.getVisibility() == View.INVISIBLE) {
-                    control.setVisibility(View.VISIBLE);
-                } else if (control.getVisibility() == View.VISIBLE) {
-                    control.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -484,11 +499,18 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             Toast.makeText(this, chName.get(pos).toString(), Toast.LENGTH_SHORT).show();
             simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
             pw.setPlayer(simpleExoPlayer);
-            // DataSource.Factory daFactory=new DefaultDataSourceFactory(this, Util.getUserAgent(this,"EXOPlayer"));
+             //DataSource.Factory daFactory=new DefaultDataSourceFactory(this, Util.getUserAgent(this,"EXOPlayer"));
+            DataSource.Factory factory=new DataSource.Factory() {
+                @Override
+                public DataSource createDataSource() {
+                    MyAesCipherDataSource dataSource=new MyAesCipherDataSource(new DefaultHttpDataSource(Util.getUserAgent(MainActivity.this,"exoplayer")));
+                    return dataSource;
+                }
+            };
 
             Uri audioUri = Uri.parse(urls.get(pos));
 
-            MediaSource mediaSource = new ProgressiveMediaSource.Factory(daFactory).createMediaSource(audioUri);
+            MediaSource mediaSource = new ProgressiveMediaSource.Factory(factory).createMediaSource(audioUri);
 
             simpleExoPlayer.prepare(mediaSource);
             simpleExoPlayer.setPlayWhenReady(true);
@@ -553,7 +575,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
     public void liveClick(View view) {
         StreamAPI streamAPI = new StreamAPI();
-        streamAPI.execute("http://192.168.10.40:1010");
+        streamAPI.execute("http://192.168.10.85:2020");
 
        /*PlayerViewModel playerViewModel=new PlayerViewModel(getApplication(),"http://192.168.10.85:3030");
          playerViewModel.playLive();*/
@@ -852,7 +874,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         String date=edt_date.getText().toString();
         String time=edt_time.getText().toString();
         date=date.replaceAll("/","_");
-        StringBuilder url = new StringBuilder().append("http://192.168.10.40:1010/");
+        StringBuilder url = new StringBuilder().append("http://192.168.10.85:2020/");
         StringBuilder change_url = new StringBuilder();
 
    /*     change_url.append(dateViewModel.getYear())
