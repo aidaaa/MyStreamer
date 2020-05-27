@@ -573,14 +573,6 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
         });
     }
 
-    public void liveClick(View view) {
-        StreamAPI streamAPI = new StreamAPI();
-        streamAPI.execute("http://192.168.10.85:2020");
-
-       /*PlayerViewModel playerViewModel=new PlayerViewModel(getApplication(),"http://192.168.10.85:3030");
-         playerViewModel.playLive();*/
-    }
-
     public boolean checkDate(String date) {
         try {
             boolean resault = true;
@@ -871,10 +863,12 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
     }
 
     public void playFile(View view) {
+        String address=urls.get(pos);
         String date=edt_date.getText().toString();
         String time=edt_time.getText().toString();
         date=date.replaceAll("/","_");
-        StringBuilder url = new StringBuilder().append("http://192.168.10.85:2020/");
+        //StringBuilder url = new StringBuilder().append("http://192.168.10.85:2020/");
+        StringBuilder url = new StringBuilder().append(address+"/");
         StringBuilder change_url = new StringBuilder();
 
    /*     change_url.append(dateViewModel.getYear())
@@ -901,6 +895,15 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
             StreamAPI streamAPI = new StreamAPI();
             streamAPI.execute(url.toString());
         }
+    }
+
+    public void liveClick(View view) {
+        String address=urls.get(pos);
+        StreamAPI streamAPI = new StreamAPI();
+        streamAPI.execute(address);
+
+       /*PlayerViewModel playerViewModel=new PlayerViewModel(getApplication(),"http://192.168.10.85:3030");
+         playerViewModel.playLive();*/
     }
 
     public class StreamAPI extends AsyncTask<String, String, MutableLiveData<String>> {
