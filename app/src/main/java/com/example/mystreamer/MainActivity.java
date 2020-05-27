@@ -524,9 +524,12 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Arr
 
                 @Override
                 public void onPlayerError(ExoPlaybackException error) {
+                    if (error.getMessage().equals("com.google.android.exoplayer2.upstream.Loader$UnexpectedLoaderException: Unexpected NullPointerException: Attempt to invoke virtual method 'void javax.crypto.CipherInputStream.close()' on a null object reference"))
+                        Toast.makeText(MainActivity.this, "استریم ورودی برقرار نیست", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(MainActivity.this, "در پخش مشکلی پیش آمده مجدد تلاش کنید", Toast.LENGTH_LONG).show();
                     prg_bar.setVisibility(View.INVISIBLE);
-                    Toast.makeText(MainActivity.this, "در پخش مشکلی پیش آمده مجدد تلاش کنید", Toast.LENGTH_LONG).show();
-                    System.out.println(error.getMessage());
+                    System.out.println("error:"+error.getMessage());
                 }
             });
         }
