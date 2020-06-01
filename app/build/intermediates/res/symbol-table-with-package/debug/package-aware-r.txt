@@ -1,4 +1,4 @@
-com.example.mystreamer
+com.example.presenter.view.mystreamer
 anim abc_fade_in
 anim abc_fade_out
 anim abc_grow_fade_in_from_bottom
@@ -1570,6 +1570,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_epg
 layout activity_main
 layout activity_main2
 layout ch_rv_item

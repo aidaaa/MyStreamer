@@ -232,27 +232,27 @@ public final class R {
     public static final class layout {
         private layout() {}
 
-        public static final int exo_list_divider = 0x7f0b0030;
-        public static final int exo_playback_control_view = 0x7f0b0031;
-        public static final int exo_player_control_view = 0x7f0b0032;
-        public static final int exo_player_view = 0x7f0b0033;
-        public static final int exo_simple_player_view = 0x7f0b0034;
-        public static final int exo_track_selection_dialog = 0x7f0b0035;
-        public static final int notification_action = 0x7f0b0038;
-        public static final int notification_action_tombstone = 0x7f0b0039;
-        public static final int notification_media_action = 0x7f0b003a;
-        public static final int notification_media_cancel_action = 0x7f0b003b;
-        public static final int notification_template_big_media = 0x7f0b003c;
-        public static final int notification_template_big_media_custom = 0x7f0b003d;
-        public static final int notification_template_big_media_narrow = 0x7f0b003e;
-        public static final int notification_template_big_media_narrow_custom = 0x7f0b003f;
-        public static final int notification_template_custom_big = 0x7f0b0040;
-        public static final int notification_template_icon_group = 0x7f0b0041;
-        public static final int notification_template_lines_media = 0x7f0b0042;
-        public static final int notification_template_media = 0x7f0b0043;
-        public static final int notification_template_media_custom = 0x7f0b0044;
-        public static final int notification_template_part_chronometer = 0x7f0b0045;
-        public static final int notification_template_part_time = 0x7f0b0046;
+        public static final int exo_list_divider = 0x7f0b0031;
+        public static final int exo_playback_control_view = 0x7f0b0032;
+        public static final int exo_player_control_view = 0x7f0b0033;
+        public static final int exo_player_view = 0x7f0b0034;
+        public static final int exo_simple_player_view = 0x7f0b0035;
+        public static final int exo_track_selection_dialog = 0x7f0b0036;
+        public static final int notification_action = 0x7f0b0039;
+        public static final int notification_action_tombstone = 0x7f0b003a;
+        public static final int notification_media_action = 0x7f0b003b;
+        public static final int notification_media_cancel_action = 0x7f0b003c;
+        public static final int notification_template_big_media = 0x7f0b003d;
+        public static final int notification_template_big_media_custom = 0x7f0b003e;
+        public static final int notification_template_big_media_narrow = 0x7f0b003f;
+        public static final int notification_template_big_media_narrow_custom = 0x7f0b0040;
+        public static final int notification_template_custom_big = 0x7f0b0041;
+        public static final int notification_template_icon_group = 0x7f0b0042;
+        public static final int notification_template_lines_media = 0x7f0b0043;
+        public static final int notification_template_media = 0x7f0b0044;
+        public static final int notification_template_media_custom = 0x7f0b0045;
+        public static final int notification_template_part_chronometer = 0x7f0b0046;
+        public static final int notification_template_part_time = 0x7f0b0047;
     }
     public static final class string {
         private string() {}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mystreamer"
+    package="com.example.presenter.view.mystreamer"
     android:targetSandboxVersion="2"
     android:versionCode="1"
     android:versionName="1.0" >
@@ -9,7 +9,6 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="28" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,9 +16,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.example.mystreamer.dagger.app.App"
+        android:name="com.example.presenter.view.mystreamer.dagger.app.App"
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
@@ -30,8 +30,9 @@
         android:testOnly="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true" >
+        <activity android:name="com.example.presenter.EpgActivity" />
         <activity
-            android:name="com.example.mystreamer.MainActivity"
+            android:name="com.example.presenter.view.mystreamer.MainActivity"
             android:configChanges="orientation|screenSize|layoutDirection" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,7 +43,7 @@
 
         <provider
             android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
-            android:authorities="com.example.mystreamer.lifecycle-process"
+            android:authorities="com.example.presenter.view.mystreamer.lifecycle-process"
             android:exported="false"
             android:multiprocess="true" />
     </application>

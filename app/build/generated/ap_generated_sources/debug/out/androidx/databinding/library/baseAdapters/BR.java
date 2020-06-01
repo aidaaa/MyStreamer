@@ -7,13 +7,13 @@ public class BR {
 
   public static final int min = 2;
 
-  public static final int dateVm = 3;
+  public static final int hour = 3;
 
-  public static final int activity = 4;
+  public static final int month = 4;
 
-  public static final int month = 5;
+  public static final int dateVm = 5;
 
-  public static final int hour = 6;
+  public static final int activity = 6;
 
   public static final int year = 7;
 

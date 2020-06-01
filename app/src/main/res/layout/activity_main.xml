@@ -3,13 +3,13 @@
     <data>
         <variable
             name="timeVm"
-            type="com.example.mystreamer.dataBinding.TimeViewModel" />
+            type="com.example.presenter.view.mystreamer.dataBinding.TimeViewModel" />
         <variable
             name="dateVm"
-            type="com.example.mystreamer.dataBinding.DateViewModel" />
+            type="com.example.presenter.view.mystreamer.dataBinding.DateViewModel" />
     <variable
         name="activity"
-        type="com.example.mystreamer.MainActivity" />
+        type="com.example.presenter.view.mystreamer.MainActivity" />
     </data>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
